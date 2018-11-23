@@ -17,9 +17,9 @@ $this->registerModule(
     "Writers",                             // Name
     "Invite people to write on your blog", // Description
     "Olivier Meunier",                     // Author
-    '1.2.1',                               // Version
+    '1.4',                                 // Version
     [
-        'requires'    => [['core', '2.13']], // Dependencies
+        'requires'    => [['core', '2.15']], // Dependencies
         'permissions' => 'admin',            // Permissions
         'type'        => 'plugin',           // Type
         'details'     => 'http://plugins.dotaddict.org/dc2/details/writers'
