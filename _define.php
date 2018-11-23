@@ -17,7 +17,7 @@ $this->registerModule(
     "Writers",                             // Name
     "Invite people to write on your blog", // Description
     "Olivier Meunier",                     // Author
-    '1.2.1',                               // Version
+    '1.3',                                 // Version
     [
         'requires'    => [['core', '2.13']], // Dependencies
         'permissions' => 'admin',            // Permissions

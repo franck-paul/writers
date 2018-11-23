@@ -92,16 +92,42 @@ if (!empty($_POST['i_id'])) {
 <html>
 <head>
   <title><?php echo $page_title; ?></title>
+<?php
+if (!$chooser) {
+    $usersList = '';
+    $rs        = $core->getUsers([
+        'limit' => 100,
+        'order' => 'nb_post ASC']);
+    $rsStatic = $rs->toStatic();
+    $rsStatic->extend('rsExtUser');
+    $rsStatic = $rsStatic->toExtStatic();
+    $rsStatic->lexicalSort('user_id');
+    while ($rsStatic->fetch()) {
+        if (!$rsStatic->user_super) {
+            $usersList .= ($usersList != '' ? ',' : '') . '"' . $rsStatic->user_id . '"';
+        }
+    }
+    if ($usersList !== '') {
+        echo
+        dcPage::jsJson('writers', $usersList) .
+        '<script type="text/javascript">' . "\n" .
+        'usersList = [' . $usersList . ']' . "\n" .
+        "</script>\n" .
+        dcPage::jsLoad('js/jquery/jquery.autocomplete.js') .
+        dcPage::jsLoad(dcPage::getPF('writers/js/writers.js'));
+    }
+}
+?>
 </head>
 
 <body>
 <?php
 if (!$chooser) {
     echo dcPage::breadcrumb(
-        array(
+        [
             html::escapeHTML($core->blog->name)                   => '',
             '<span class="page-title">' . $page_title . '</span>' => ''
-        ));
+        ]);
     echo dcPage::notices();
 
     echo '<h3>' . __('Active writers') . '</h3>';
@@ -145,10 +171,10 @@ if (!$chooser) {
     }
 
     echo dcPage::breadcrumb(
-        array(
+        [
             html::escapeHTML($core->blog->name)                   => '',
             '<span class="page-title">' . $page_title . '</span>' => ''
-        ));
+        ]);
 
     echo '<p><a class="back" href="' . html::escapeURL('plugin.php?p=writers&pup=1') . '">' . __('Back') . '</a></p>';
     echo
