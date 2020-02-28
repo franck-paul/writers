@@ -22,6 +22,6 @@ $this->registerModule(
         'requires'    => [['core', '2.15']], // Dependencies
         'permissions' => 'admin',            // Permissions
         'type'        => 'plugin',           // Type
-        'details'     => 'http://plugins.dotaddict.org/dc2/details/writers'
+        'details'     => 'https://plugins.dotaddict.org/dc2/details/writers'
     ]
 );
