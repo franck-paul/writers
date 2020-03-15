@@ -1,4 +1,4 @@
-/*global $, usersList */
+/*global $, getData */
 'use strict';
 
 $(function() {

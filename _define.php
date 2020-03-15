@@ -19,7 +19,7 @@ $this->registerModule(
     "Olivier Meunier",                     // Author
     '1.4',                                 // Version
     [
-        'requires'    => [['core', '2.15']], // Dependencies
+        'requires'    => [['core', '2.16']], // Dependencies
         'permissions' => 'admin',            // Permissions
         'type'        => 'plugin',           // Type
         'details'     => 'https://plugins.dotaddict.org/dc2/details/writers',
