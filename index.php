@@ -94,7 +94,7 @@ if (!empty($_POST['i_id'])) {
   <title><?php echo $page_title; ?></title>
 <?php
 if (!$chooser) {
-    $usersList = '';
+    $usersList = [];
     $rs        = $core->getUsers([
         'limit' => 100,
         'order' => 'nb_post ASC']);
@@ -104,15 +104,12 @@ if (!$chooser) {
     $rsStatic->lexicalSort('user_id');
     while ($rsStatic->fetch()) {
         if (!$rsStatic->user_super) {
-            $usersList .= ($usersList != '' ? ',' : '') . '"' . $rsStatic->user_id . '"';
+            $usersList[] = $rsStatic->user_id;
         }
     }
-    if ($usersList !== '') {
+    if ($usersList !== []) {
         echo
         dcPage::jsJson('writers', $usersList) .
-        '<script type="text/javascript">' . "\n" .
-        'usersList = [' . $usersList . ']' . "\n" .
-        "</script>\n" .
         dcPage::jsLoad('js/jquery/jquery.autocomplete.js') .
         dcPage::jsLoad(dcPage::getPF('writers/js/writers.js'));
     }
