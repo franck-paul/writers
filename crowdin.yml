@@ -1,0 +1,18 @@
+preserve_hierarchy: true
+files:
+  - source: /locales/_pot/*.pot
+    translation: /locales/%two_letters_code%/%file_name%.po
+    languages_mapping:
+      two_letters_code:
+        es-AR: es-ar
+        pt-BR: pt-br
+        zh-CN: zh-cn
+        vls: nl
+  - source: /locales/en/help/*.html
+    translation: /locales/%two_letters_code%/help/%original_file_name%
+    languages_mapping:
+      two_letters_code:
+        es-AR: es-ar
+        pt-BR: pt-br
+        zh-CN: zh-cn
+        vls: nl
