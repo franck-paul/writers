@@ -10,11 +10,13 @@
 #
 # -- END LICENSE BLOCK ------------------------------------
 
-if (!defined('DC_CONTEXT_ADMIN')) {exit;}
+if (!defined('DC_CONTEXT_ADMIN')) {
+    exit;
+}
 
 if ($core->auth->isSuperAdmin()) {
     // If super-admin then redirect to blog parameters, users tab
-    http::redirect($core->adminurl->get("admin.blog.pref") . '#users');
+    http::redirect($core->adminurl->get('admin.blog.pref') . '#users');
 }
 
 $page_title = __('Writers');
@@ -27,8 +29,7 @@ $blog_users = $core->getBlogPermissions($core->blog->id, false);
 $perm_types = $core->auth->getPermissionsTypes();
 
 if (!empty($_POST['i_id'])) {
-    try
-    {
+    try {
         $rs = $core->getUser($_POST['i_id']);
 
         if ($rs->isEmpty()) {
@@ -49,7 +50,7 @@ if (!empty($_POST['i_id'])) {
         $chooser = true;
 
         if (!empty($_POST['set_perms'])) {
-            $set_perms = array();
+            $set_perms = [];
 
             if (!empty($_POST['perm'])) {
                 foreach ($_POST['perm'] as $perm_id => $v) {
@@ -63,15 +64,14 @@ if (!empty($_POST['i_id'])) {
                 }
             }
 
-            $core->auth->sudo(array($core, 'setUserBlogPermissions'), $u_id, $core->blog->id, $set_perms, true);
+            $core->auth->sudo([$core, 'setUserBlogPermissions'], $u_id, $core->blog->id, $set_perms, true);
             http::redirect($p_url . '&pup=1');
         }
     } catch (Exception $e) {
         $core->error->add($e->getMessage());
     }
 } elseif (!empty($_GET['u_id'])) {
-    try
-    {
+    try {
         if (!isset($blog_users[$_GET['u_id']])) {
             throw new Exception(__('Writer does not exists.'));
         }
@@ -164,7 +164,7 @@ if (!$chooser) {
     if (isset($blog_users[$u_id])) {
         $user_perm = $blog_users[$u_id]['p'];
     } else {
-        $user_perm = array();
+        $user_perm = [];
     }
 
     echo dcPage::breadcrumb(
@@ -191,7 +191,7 @@ if (!$chooser) {
 
         echo
         '<p><label class="classic">' .
-        form::checkbox(array('perm[' . html::escapeHTML($perm_id) . ']'),
+        form::checkbox(['perm[' . html::escapeHTML($perm_id) . ']'],
             1, $checked) . ' ' .
         __($perm) . '</label></p>';
     }

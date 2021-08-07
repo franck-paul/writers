@@ -14,12 +14,12 @@ if (!defined('DC_RC_PATH')) {
 }
 
 $this->registerModule(
-    "Writers",                             // Name
-    "Invite people to write on your blog", // Description
-    "Olivier Meunier",                     // Author
-    '1.4',                                 // Version
+    'Writers',                             // Name
+    'Invite people to write on your blog', // Description
+    'Olivier Meunier',                     // Author
+    '1.5',                                 // Version
     [
-        'requires'    => [['core', '2.16']], // Dependencies
+        'requires'    => [['core', '2.19']], // Dependencies
         'permissions' => 'admin',            // Permissions
         'type'        => 'plugin',           // Type
         'details'     => 'https://plugins.dotaddict.org/dc2/details/writers',
