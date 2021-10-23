@@ -22,7 +22,10 @@ $this->registerModule(
         'requires'    => [['core', '2.19']], // Dependencies
         'permissions' => 'admin',            // Permissions
         'type'        => 'plugin',           // Type
-        'details'     => 'https://plugins.dotaddict.org/dc2/details/writers',
-        'settings'    => []
+        'settings'    => [],
+
+        'details'    => 'https://plugins.dotaddict.org/dc2/details/writers',       // Details URL
+        'support'    => 'https://github.com/franck-paul/writers',                  // Support URL
+        'repository' => 'https://raw.githubusercontent.com/franck-paul/writers/main/dcstore.xml'
     ]
 );
