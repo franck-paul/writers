@@ -26,6 +26,6 @@ $this->registerModule(
 
         'details'    => 'https://plugins.dotaddict.org/dc2/details/writers',       // Details URL
         'support'    => 'https://github.com/franck-paul/writers',                  // Support URL
-        'repository' => 'https://raw.githubusercontent.com/franck-paul/writers/main/dcstore.xml'
+        'repository' => 'https://raw.githubusercontent.com/franck-paul/writers/master/dcstore.xml'
     ]
 );
