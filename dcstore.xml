@@ -1,8 +1,8 @@
 <modules xmlns:da="http://dotaddict.org/da/">
   <module id="writers">
-    <name>Writers</name>
+    <name>Invite people to write on your blog</name>
     <version>1.5</version>
-    <author>Olivier Meunier</author>
+    <author>Invite people to write on your blog</author>
     <desc>Invite people to write on your blog</desc>
     <file>https://github.com/franck-paul/writers/releases/download/1.5/plugin-writers-1.5.zip</file>
     <da:dcmin>2.19</da:dcmin>
