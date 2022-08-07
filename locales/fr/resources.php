@@ -11,5 +11,5 @@
 # -- END LICENSE BLOCK ------------------------------------
 if (!isset($__resources['help']['writers']))
 {
-	$__resources['help']['writers'] = dirname(__FILE__).'/help/writers.html';
+	$__resources['help']['writers'] = __DIR__.'/help/writers.html';
 }

@@ -14,9 +14,9 @@ if (!defined('DC_CONTEXT_ADMIN')) {
     exit;
 }
 
-if ($core->auth->isSuperAdmin()) {
+if (dcCore::app()->auth->isSuperAdmin()) {
     // If super-admin then redirect to blog parameters, users tab
-    http::redirect($core->adminurl->get('admin.blog.pref') . '#users');
+    http::redirect(dcCore::app()->adminurl->get('admin.blog.pref') . '#users');
 }
 
 $page_title = __('Writers');
@@ -25,12 +25,12 @@ $u_id    = null;
 $u_name  = null;
 $chooser = false;
 
-$blog_users = $core->getBlogPermissions($core->blog->id, false);
-$perm_types = $core->auth->getPermissionsTypes();
+$blog_users = dcCore::app()->getBlogPermissions(dcCore::app()->blog->id, false);
+$perm_types = dcCore::app()->auth->getPermissionsTypes();
 
 if (!empty($_POST['i_id'])) {
     try {
-        $rs = $core->getUser($_POST['i_id']);
+        $rs = dcCore::app()->getUser($_POST['i_id']);
 
         if ($rs->isEmpty()) {
             throw new Exception(__('Writer does not exists.'));
@@ -40,7 +40,7 @@ if (!empty($_POST['i_id'])) {
             throw new Exception(__('You cannot add or update this writer.'));
         }
 
-        if ($rs->user_id == $core->auth->userID()) {
+        if ($rs->user_id == dcCore::app()->auth->userID()) {
             throw new Exception(__('You cannot change your own permissions.'));
         }
 
@@ -54,7 +54,7 @@ if (!empty($_POST['i_id'])) {
 
             if (!empty($_POST['perm'])) {
                 foreach ($_POST['perm'] as $perm_id => $v) {
-                    if (!DC_WR_ALLOW_ADMIN && $perm_id == 'admin') {
+                    if (!DC_WR_ALLOW_ADMIN && $perm_id == 'admin') {    // @phpstan-ignore-line
                         continue;
                     }
 
@@ -64,11 +64,11 @@ if (!empty($_POST['i_id'])) {
                 }
             }
 
-            $core->auth->sudo([$core, 'setUserBlogPermissions'], $u_id, $core->blog->id, $set_perms, true);
+            dcCore::app()->auth->sudo([dcCore::app(), 'setUserBlogPermissions'], $u_id, dcCore::app()->blog->id, $set_perms, true);
             http::redirect($p_url . '&pup=1');
         }
     } catch (Exception $e) {
-        $core->error->add($e->getMessage());
+        dcCore::app()->error->add($e->getMessage());
     }
 } elseif (!empty($_GET['u_id'])) {
     try {
@@ -76,16 +76,20 @@ if (!empty($_POST['i_id'])) {
             throw new Exception(__('Writer does not exists.'));
         }
 
-        if ($_GET['u_id'] == $core->auth->userID()) {
+        if ($_GET['u_id'] == dcCore::app()->auth->userID()) {
             throw new Exception(__('You cannot change your own permissions.'));
         }
 
         $u_id   = $_GET['u_id'];
-        $u_name = dcUtils::getUserCN($u_id, $blog_users[$u_id]['name'],
-            $blog_users[$u_id]['firstname'], $blog_users[$u_id]['displayname']);
+        $u_name = dcUtils::getUserCN(
+            $u_id,
+            $blog_users[$u_id]['name'],
+            $blog_users[$u_id]['firstname'],
+            $blog_users[$u_id]['displayname']
+        );
         $chooser = true;
     } catch (Exception $e) {
-        $core->error->add($e->getMessage());
+        dcCore::app()->error->add($e->getMessage());
     }
 }
 ?>
@@ -95,9 +99,9 @@ if (!empty($_POST['i_id'])) {
 <?php
 if (!$chooser) {
     $usersList = [];
-    $rs        = $core->getUsers([
+    $rs        = dcCore::app()->getUsers([
         'limit' => 100,
-        'order' => 'nb_post ASC']);
+        'order' => 'nb_post ASC', ]);
     $rsStatic = $rs->toStatic();
     $rsStatic->extend('rsExtUser');
     $rsStatic = $rsStatic->toExtStatic();
@@ -111,7 +115,7 @@ if (!$chooser) {
         echo
         dcPage::jsJson('writers', $usersList) .
         dcPage::jsLoad('js/jquery/jquery.autocomplete.js') .
-        dcPage::jsLoad(dcPage::getPF('writers/js/writers.js'));
+        dcPage::jsModuleLoad('writers/js/writers.js');
     }
 }
 ?>
@@ -122,9 +126,10 @@ if (!$chooser) {
 if (!$chooser) {
     echo dcPage::breadcrumb(
         [
-            html::escapeHTML($core->blog->name)                   => '',
-            '<span class="page-title">' . $page_title . '</span>' => ''
-        ]);
+            html::escapeHTML(dcCore::app()->blog->name)           => '',
+            '<span class="page-title">' . $page_title . '</span>' => '',
+        ]
+    );
     echo dcPage::notices();
 
     echo '<h3>' . __('Active writers') . '</h3>';
@@ -133,11 +138,14 @@ if (!$chooser) {
         echo '<p>' . __('No writers') . '</p>';
     } else {
         foreach ($blog_users as $k => $v) {
-            if (count($v['p']) > 0 && $k != $core->auth->userID()) {
+            if (count($v['p']) > 0 && $k != dcCore::app()->auth->userID()) {
                 echo
                 '<h4>' . html::escapeHTML($k) .
                 ' (' . html::escapeHTML(dcUtils::getUserCN(
-                    $k, $v['name'], $v['firstname'], $v['displayname']
+                    $k,
+                    $v['name'],
+                    $v['firstname'],
+                    $v['displayname']
                 )) . ') - ' .
                 '<a href="' . $p_url . '&amp;u_id=' . html::escapeHTML($k) . '">' .
                 __('change permissions') . '</a></h4>';
@@ -158,7 +166,7 @@ if (!$chooser) {
     '<p><label class="classic" for="i_id">' . __('Author ID (login): ') . ' ' .
     form::field('i_id', 32, 32, $u_id) . '</label> ' .
     '<input type="submit" value="' . __('Invite') . '" />' .
-    $core->formNonce() . '</p>' .
+    dcCore::app()->formNonce() . '</p>' .
         '</form>';
 } elseif ($u_id) {
     if (isset($blog_users[$u_id])) {
@@ -169,21 +177,24 @@ if (!$chooser) {
 
     echo dcPage::breadcrumb(
         [
-            html::escapeHTML($core->blog->name)                   => '',
-            '<span class="page-title">' . $page_title . '</span>' => ''
-        ]);
+            html::escapeHTML(dcCore::app()->blog->name)           => '',
+            '<span class="page-title">' . $page_title . '</span>' => '',
+        ]
+    );
 
     echo '<p><a class="back" href="' . html::escapeURL('plugin.php?p=writers&pup=1') . '">' . __('Back') . '</a></p>';
     echo
-    '<p>' . sprintf(__('You are about to set permissions on the blog %s for user %s (%s).'),
-        '<strong>' . html::escapeHTML($core->blog->name) . '</strong>',
+    '<p>' . sprintf(
+        __('You are about to set permissions on the blog %s for user %s (%s).'),
+        '<strong>' . html::escapeHTML(dcCore::app()->blog->name) . '</strong>',
         '<strong>' . $u_id . '</strong>',
-        html::escapeHTML($u_name)) . '</p>' .
+        html::escapeHTML($u_name)
+    ) . '</p>' .
 
         '<form action="' . $p_url . '" method="post">';
 
     foreach ($perm_types as $perm_id => $perm) {
-        if (!DC_WR_ALLOW_ADMIN && $perm_id == 'admin') {
+        if (!DC_WR_ALLOW_ADMIN && $perm_id == 'admin') {    // @phpstan-ignore-line
             continue;
         }
 
@@ -191,14 +202,17 @@ if (!$chooser) {
 
         echo
         '<p><label class="classic">' .
-        form::checkbox(['perm[' . html::escapeHTML($perm_id) . ']'],
-            1, $checked) . ' ' .
+        form::checkbox(
+            ['perm[' . html::escapeHTML($perm_id) . ']'],
+            1,
+            $checked
+        ) . ' ' .
         __($perm) . '</label></p>';
     }
 
     echo
     '<p><input type="submit" value="' . __('Save') . '" />' .
-    $core->formNonce() .
+    dcCore::app()->formNonce() .
     form::hidden('i_id', html::escapeHTML($u_id)) .
     form::hidden('set_perms', 1) . '</p>' .
         '</form>';

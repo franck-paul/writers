@@ -1,4 +1,5 @@
 <?php
+
 # -- BEGIN LICENSE BLOCK ----------------------------------
 #
 # This file is part of Writers, a plugin for Dotclear.
@@ -17,15 +18,15 @@ $this->registerModule(
     'Writers',                             // Name
     'Invite people to write on your blog', // Description
     'Olivier Meunier',                     // Author
-    '1.5',                                 // Version
+    '1.6',                                 // Version
     [
-        'requires'    => [['core', '2.19']], // Dependencies
+        'requires'    => [['core', '2.23']], // Dependencies
         'permissions' => 'admin',            // Permissions
         'type'        => 'plugin',           // Type
         'settings'    => [],
 
         'details'    => 'https://plugins.dotaddict.org/dc2/details/writers',       // Details URL
         'support'    => 'https://github.com/franck-paul/writers',                  // Support URL
-        'repository' => 'https://raw.githubusercontent.com/franck-paul/writers/master/dcstore.xml'
+        'repository' => 'https://raw.githubusercontent.com/franck-paul/writers/master/dcstore.xml',
     ]
 );

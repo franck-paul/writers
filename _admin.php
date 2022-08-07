@@ -1,4 +1,5 @@
 <?php
+
 # -- BEGIN LICENSE BLOCK ----------------------------------
 #
 # This file is part of Writers, a plugin for Dotclear.
@@ -13,8 +14,10 @@ if (!defined('DC_CONTEXT_ADMIN')) {
     return;
 }
 
-$_menu['Blog']->addItem(__('Writers'),
+$_menu['Blog']->addItem(
+    __('Writers'),
     'plugin.php?p=writers',
-    'images/menu/users.png',
+    'images/menu/users.svg',
     preg_match('/plugin.php\?p=writers/', $_SERVER['REQUEST_URI']),
-    $core->auth->check('admin', $core->blog->id));
+    dcCore::app()->auth->check('admin', dcCore::app()->blog->id)
+);
