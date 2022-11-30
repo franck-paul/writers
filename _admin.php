@@ -14,10 +14,12 @@ if (!defined('DC_CONTEXT_ADMIN')) {
     return;
 }
 
-$_menu['Blog']->addItem(
+dcCore::app()->menu[dcAdmin::MENU_BLOG]->addItem(
     __('Writers'),
     'plugin.php?p=writers',
     'images/menu/users.svg',
     preg_match('/plugin.php\?p=writers/', $_SERVER['REQUEST_URI']),
-    dcCore::app()->auth->check('admin', dcCore::app()->blog->id)
+    dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
+        dcAuth::PERMISSION_ADMIN,
+    ]), dcCore::app()->blog->id)
 );

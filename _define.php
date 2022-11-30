@@ -15,18 +15,20 @@ if (!defined('DC_RC_PATH')) {
 }
 
 $this->registerModule(
-    'Writers',                             // Name
-    'Invite people to write on your blog', // Description
-    'Olivier Meunier',                     // Author
-    '1.6',                                 // Version
+    'Writers',
+    'Invite people to write on your blog',
+    'Olivier Meunier',
+    '2.0',
     [
-        'requires'    => [['core', '2.23']], // Dependencies
-        'permissions' => 'admin',            // Permissions
-        'type'        => 'plugin',           // Type
-        'settings'    => [],
+        'requires'    => [['core', '2.24']],
+        'permissions' => dcCore::app()->auth->makePermissions([
+            dcAuth::PERMISSION_ADMIN,
+        ]),
+        'type'     => 'plugin',
+        'settings' => [],
 
-        'details'    => 'https://plugins.dotaddict.org/dc2/details/writers',       // Details URL
-        'support'    => 'https://github.com/franck-paul/writers',                  // Support URL
+        'details'    => 'https://plugins.dotaddict.org/dc2/details/writers',
+        'support'    => 'https://github.com/franck-paul/writers',
         'repository' => 'https://raw.githubusercontent.com/franck-paul/writers/master/dcstore.xml',
     ]
 );

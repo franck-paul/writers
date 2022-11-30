@@ -54,7 +54,7 @@ if (!empty($_POST['i_id'])) {
 
             if (!empty($_POST['perm'])) {
                 foreach ($_POST['perm'] as $perm_id => $v) {
-                    if (!DC_WR_ALLOW_ADMIN && $perm_id == 'admin') {    // @phpstan-ignore-line
+                    if (!DC_WR_ALLOW_ADMIN && $perm_id === dcAuth::PERMISSION_ADMIN) {    // @phpstan-ignore-line
                         continue;
                     }
 
@@ -65,7 +65,7 @@ if (!empty($_POST['i_id'])) {
             }
 
             dcCore::app()->auth->sudo([dcCore::app(), 'setUserBlogPermissions'], $u_id, dcCore::app()->blog->id, $set_perms, true);
-            http::redirect($p_url . '&pup=1');
+            http::redirect(dcCore::app()->admin->getPageURL() . '&pup=1');
         }
     } catch (Exception $e) {
         dcCore::app()->error->add($e->getMessage());
@@ -104,7 +104,7 @@ if (!$chooser) {
         'order' => 'nb_post ASC', ]);
     $rsStatic = $rs->toStatic();
     $rsStatic->extend('rsExtUser');
-    $rsStatic = $rsStatic->toExtStatic();
+    $rsStatic = $rsStatic->toExtStatic();   // @phpstan-ignore-line
     $rsStatic->lexicalSort('user_id');
     while ($rsStatic->fetch()) {
         if (!$rsStatic->user_super) {
@@ -147,7 +147,7 @@ if (!$chooser) {
                     $v['firstname'],
                     $v['displayname']
                 )) . ') - ' .
-                '<a href="' . $p_url . '&amp;u_id=' . html::escapeHTML($k) . '">' .
+                '<a href="' . dcCore::app()->admin->getPageURL() . '&amp;u_id=' . html::escapeHTML($k) . '">' .
                 __('change permissions') . '</a></h4>';
 
                 echo '<ul>';
@@ -162,7 +162,7 @@ if (!$chooser) {
     echo '<h3>' . __('Invite a new writer') . '</h3>';
 
     echo
-    '<form action="' . $p_url . '" method="post">' .
+    '<form action="' . dcCore::app()->admin->getPageURL() . '" method="post">' .
     '<p><label class="classic" for="i_id">' . __('Author ID (login): ') . ' ' .
     form::field('i_id', 32, 32, $u_id) . '</label> ' .
     '<input type="submit" value="' . __('Invite') . '" />' .
@@ -191,10 +191,10 @@ if (!$chooser) {
         html::escapeHTML($u_name)
     ) . '</p>' .
 
-        '<form action="' . $p_url . '" method="post">';
+        '<form action="' . dcCore::app()->admin->getPageURL() . '" method="post">';
 
     foreach ($perm_types as $perm_id => $perm) {
-        if (!DC_WR_ALLOW_ADMIN && $perm_id == 'admin') {    // @phpstan-ignore-line
+        if (!DC_WR_ALLOW_ADMIN && $perm_id === dcAuth::PERMISSION_ADMIN) {    // @phpstan-ignore-line
             continue;
         }
 
