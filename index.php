@@ -10,13 +10,16 @@
 #
 # -- END LICENSE BLOCK ------------------------------------
 
+use Dotclear\Helper\Html\Html;
+use Dotclear\Helper\Network\Http;
+
 if (!defined('DC_CONTEXT_ADMIN')) {
     exit;
 }
 
 if (dcCore::app()->auth->isSuperAdmin()) {
     // If super-admin then redirect to blog parameters, users tab
-    http::redirect(dcCore::app()->adminurl->get('admin.blog.pref') . '#users');
+    Http::redirect(dcCore::app()->adminurl->get('admin.blog.pref') . '#users');
 }
 
 $page_title = __('Writers');
@@ -65,7 +68,7 @@ if (!empty($_POST['i_id'])) {
             }
 
             dcCore::app()->auth->sudo([dcCore::app(), 'setUserBlogPermissions'], $u_id, dcCore::app()->blog->id, $set_perms, true);
-            http::redirect(dcCore::app()->admin->getPageURL() . '&pup=1');
+            Http::redirect(dcCore::app()->admin->getPageURL() . '&pup=1');
         }
     } catch (Exception $e) {
         dcCore::app()->error->add($e->getMessage());
@@ -126,7 +129,7 @@ if (!$chooser) {
 if (!$chooser) {
     echo dcPage::breadcrumb(
         [
-            html::escapeHTML(dcCore::app()->blog->name)           => '',
+            Html::escapeHTML(dcCore::app()->blog->name)           => '',
             '<span class="page-title">' . $page_title . '</span>' => '',
         ]
     );
@@ -138,16 +141,16 @@ if (!$chooser) {
         echo '<p>' . __('No writers') . '</p>';
     } else {
         foreach ($blog_users as $k => $v) {
-            if (count($v['p']) > 0 && $k != dcCore::app()->auth->userID()) {
+            if ((is_countable($v['p']) ? count($v['p']) : 0) > 0 && $k != dcCore::app()->auth->userID()) {
                 echo
-                '<h4>' . html::escapeHTML($k) .
-                ' (' . html::escapeHTML(dcUtils::getUserCN(
+                '<h4>' . Html::escapeHTML($k) .
+                ' (' . Html::escapeHTML(dcUtils::getUserCN(
                     $k,
                     $v['name'],
                     $v['firstname'],
                     $v['displayname']
                 )) . ') - ' .
-                '<a href="' . dcCore::app()->admin->getPageURL() . '&amp;u_id=' . html::escapeHTML($k) . '">' .
+                '<a href="' . dcCore::app()->admin->getPageURL() . '&amp;u_id=' . Html::escapeHTML($k) . '">' .
                 __('change permissions') . '</a></h4>';
 
                 echo '<ul>';
@@ -177,18 +180,18 @@ if (!$chooser) {
 
     echo dcPage::breadcrumb(
         [
-            html::escapeHTML(dcCore::app()->blog->name)           => '',
+            Html::escapeHTML(dcCore::app()->blog->name)           => '',
             '<span class="page-title">' . $page_title . '</span>' => '',
         ]
     );
 
-    echo '<p><a class="back" href="' . html::escapeURL('plugin.php?p=writers&pup=1') . '">' . __('Back') . '</a></p>';
+    echo '<p><a class="back" href="' . Html::escapeURL('plugin.php?p=writers&pup=1') . '">' . __('Back') . '</a></p>';
     echo
     '<p>' . sprintf(
         __('You are about to set permissions on the blog %s for user %s (%s).'),
-        '<strong>' . html::escapeHTML(dcCore::app()->blog->name) . '</strong>',
+        '<strong>' . Html::escapeHTML(dcCore::app()->blog->name) . '</strong>',
         '<strong>' . $u_id . '</strong>',
-        html::escapeHTML($u_name)
+        Html::escapeHTML($u_name)
     ) . '</p>' .
 
         '<form action="' . dcCore::app()->admin->getPageURL() . '" method="post">';
@@ -203,7 +206,7 @@ if (!$chooser) {
         echo
         '<p><label class="classic">' .
         form::checkbox(
-            ['perm[' . html::escapeHTML($perm_id) . ']'],
+            ['perm[' . Html::escapeHTML($perm_id) . ']'],
             1,
             $checked
         ) . ' ' .
@@ -213,7 +216,7 @@ if (!$chooser) {
     echo
     '<p><input type="submit" value="' . __('Save') . '" />' .
     dcCore::app()->formNonce() .
-    form::hidden('i_id', html::escapeHTML($u_id)) .
+    form::hidden('i_id', Html::escapeHTML($u_id)) .
     form::hidden('set_perms', 1) . '</p>' .
         '</form>';
 }
