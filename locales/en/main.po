@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: writers-dotclear-2-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-30 10:54+0200\n"
+"POT-Creation-Date: 2023-06-09 19:00+0200\n"
 "PO-Revision-Date: 2020-04-30 12:25\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: English\n"
@@ -15,48 +15,49 @@ msgstr ""
 "X-Crowdin-Language: en\n"
 "X-Crowdin-File: /master/locales/_pot/main.pot\n"
 
-#: ../git-plugins/writers/_admin.php:14 ../git-plugins/writers/index.php:20
 msgid "Writers"
 msgstr ""
 
-#: ../git-plugins/writers/index.php:35 ../git-plugins/writers/index.php:76
+msgid "writers"
+msgstr ""
+
 msgid "Writer does not exists."
 msgstr ""
 
-#: ../git-plugins/writers/index.php:39
 msgid "You cannot add or update this writer."
 msgstr ""
 
-#: ../git-plugins/writers/index.php:43 ../git-plugins/writers/index.php:80
 msgid "You cannot change your own permissions."
 msgstr ""
 
-#: ../git-plugins/writers/index.php:130
+#, php-format
+msgid "Permissions updated for user %s"
+msgstr ""
+
 msgid "Active writers"
 msgstr ""
 
-#: ../git-plugins/writers/index.php:133
 msgid "No writers"
 msgstr ""
 
-#: ../git-plugins/writers/index.php:143
 msgid "change permissions"
 msgstr ""
 
-#: ../git-plugins/writers/index.php:154
 msgid "Invite a new writer"
 msgstr ""
 
-#: ../git-plugins/writers/index.php:158
 msgid "Author ID (login): "
 msgstr ""
 
-#: ../git-plugins/writers/index.php:160
 msgid "Invite"
 msgstr ""
 
-#: ../git-plugins/writers/index.php:178
+msgid "Back"
+msgstr ""
+
 #, php-format
 msgid "You are about to set permissions on the blog %s for user %s (%s)."
 msgstr ""
 
+msgid "Save"
+msgstr ""
