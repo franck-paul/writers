@@ -33,11 +33,6 @@ class Manage extends dcNsProcess
     {
         static::$init = My::checkContext(My::MANAGE);
 
-        if (dcCore::app()->auth->isSuperAdmin()) {
-            // If super-admin then redirect to blog parameters, users tab
-            Http::redirect(dcCore::app()->adminurl->get('admin.blog.pref') . '#users');
-        }
-
         return static::$init;
     }
 
@@ -48,6 +43,11 @@ class Manage extends dcNsProcess
     {
         if (!static::$init) {
             return false;
+        }
+
+        if (dcCore::app()->auth->isSuperAdmin()) {
+            // If super-admin then redirect to blog parameters, users tab
+            Http::redirect(dcCore::app()->adminurl->get('admin.blog.pref') . '#users');
         }
 
         dcCore::app()->admin->u_id    = null;
