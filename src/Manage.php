@@ -20,7 +20,6 @@ use dcNsProcess;
 use dcPage;
 use dcUtils;
 use Dotclear\Helper\Html\Html;
-use Dotclear\Helper\Network\Http;
 use Exception;
 use form;
 
@@ -47,7 +46,7 @@ class Manage extends dcNsProcess
 
         if (dcCore::app()->auth->isSuperAdmin()) {
             // If super-admin then redirect to blog parameters, users tab
-            Http::redirect(dcCore::app()->adminurl->get('admin.blog.pref') . '#users');
+            dcCore::app()->adminurl->redirect('admin.blog.pref', [], '#users');
         }
 
         dcCore::app()->admin->u_id    = null;
@@ -93,7 +92,9 @@ class Manage extends dcNsProcess
                     dcCore::app()->auth->sudo([dcCore::app(), 'setUserBlogPermissions'], dcCore::app()->admin->u_id, dcCore::app()->blog->id, $set_perms, true);
 
                     dcPage::addSuccessNotice(sprintf(__('Permissions updated for user %s'), dcCore::app()->admin->u_name));
-                    Http::redirect(dcCore::app()->admin->getPageURL() . '&pup=1');
+                    dcCore::app()->adminurl->redirect('admin.plugin.' . My::id(), [
+                        'pup' => 1,
+                    ]);
                 }
             } catch (Exception $e) {
                 dcCore::app()->error->add($e->getMessage());
