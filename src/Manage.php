@@ -25,7 +25,10 @@ use form;
 
 class Manage extends dcNsProcess
 {
-    protected static $init = false; /** @deprecated since 2.27 */
+    private static ?string $u_id   = null;
+    private static ?string $u_name = null;
+    private static bool $chooser   = false;
+    protected static $init         = false; /** @deprecated since 2.27 */
     /**
      * Initializes the page.
      */
@@ -50,9 +53,9 @@ class Manage extends dcNsProcess
             dcCore::app()->adminurl->redirect('admin.blog.pref', [], '#users');
         }
 
-        dcCore::app()->admin->u_id    = null;
-        dcCore::app()->admin->u_name  = null;
-        dcCore::app()->admin->chooser = false;
+        self::$u_id    = null;
+        self::$u_name  = null;
+        self::$chooser = false;
 
         if (!empty($_POST['i_id'])) {
             try {
@@ -70,10 +73,10 @@ class Manage extends dcNsProcess
                     throw new Exception(__('You cannot change your own permissions.'));
                 }
 
-                dcCore::app()->admin->u_id   = $rs->user_id;
-                dcCore::app()->admin->u_name = dcUtils::getUserCN(dcCore::app()->admin->u_id, $rs->user_name, $rs->user_firstname, $rs->user_displayname);
+                self::$u_id   = $rs->user_id;
+                self::$u_name = dcUtils::getUserCN(self::$u_id, $rs->user_name, $rs->user_firstname, $rs->user_displayname);
                 unset($rs);
-                dcCore::app()->admin->chooser = true;
+                self::$chooser = true;
 
                 if (!empty($_POST['set_perms'])) {
                     $set_perms = [];
@@ -90,9 +93,9 @@ class Manage extends dcNsProcess
                         }
                     }
 
-                    dcCore::app()->auth->sudo([dcCore::app(), 'setUserBlogPermissions'], dcCore::app()->admin->u_id, dcCore::app()->blog->id, $set_perms, true);
+                    dcCore::app()->auth->sudo([dcCore::app(), 'setUserBlogPermissions'], self::$u_id, dcCore::app()->blog->id, $set_perms, true);
 
-                    dcPage::addSuccessNotice(sprintf(__('Permissions updated for user %s'), dcCore::app()->admin->u_name));
+                    dcPage::addSuccessNotice(sprintf(__('Permissions updated for user %s'), self::$u_name));
                     dcCore::app()->adminurl->redirect('admin.plugin.' . My::id(), [
                         'pup' => 1,
                     ]);
@@ -127,21 +130,21 @@ class Manage extends dcNsProcess
                     throw new Exception(__('You cannot change your own permissions.'));
                 }
 
-                dcCore::app()->admin->u_id   = $_GET['u_id'];
-                dcCore::app()->admin->u_name = dcUtils::getUserCN(
-                    dcCore::app()->admin->u_id,
-                    $blog_users[dcCore::app()->admin->u_id]['name'],
-                    $blog_users[dcCore::app()->admin->u_id]['firstname'],
-                    $blog_users[dcCore::app()->admin->u_id]['displayname']
+                self::$u_id   = $_GET['u_id'];
+                self::$u_name = dcUtils::getUserCN(
+                    self::$u_id,
+                    $blog_users[self::$u_id]['name'],
+                    $blog_users[self::$u_id]['firstname'],
+                    $blog_users[self::$u_id]['displayname']
                 );
-                dcCore::app()->admin->chooser = true;
+                self::$chooser = true;
             } catch (Exception $e) {
                 dcCore::app()->error->add($e->getMessage());
             }
         }
 
         $head = '';
-        if (!dcCore::app()->admin->chooser) {
+        if (!self::$chooser) {
             $usersList = [];
 
             $rs = dcCore::app()->getUsers([
@@ -177,7 +180,7 @@ class Manage extends dcNsProcess
 
         // Form
 
-        if (!dcCore::app()->admin->chooser) {
+        if (!self::$chooser) {
             echo '<h3>' . __('Active writers') . '</h3>';
 
             if (count($blog_users) <= 1) {
@@ -210,13 +213,13 @@ class Manage extends dcNsProcess
             echo
             '<form action="' . dcCore::app()->admin->getPageURL() . '" method="post">' .
             '<p><label class="classic" for="i_id">' . __('Author ID (login): ') . ' ' .
-            form::field('i_id', 32, 32, dcCore::app()->admin->u_id) . '</label> ' .
+            form::field('i_id', 32, 32, self::$u_id) . '</label> ' .
             '<input type="submit" value="' . __('Invite') . '" />' .
             dcCore::app()->formNonce() . '</p>' .
             '</form>';
-        } elseif (dcCore::app()->admin->u_id) {
-            if (isset($blog_users[dcCore::app()->admin->u_id])) {
-                $user_perm = $blog_users[dcCore::app()->admin->u_id]['p'];
+        } elseif (self::$u_id) {
+            if (isset($blog_users[self::$u_id])) {
+                $user_perm = $blog_users[self::$u_id]['p'];
             } else {
                 $user_perm = [];
             }
@@ -226,8 +229,8 @@ class Manage extends dcNsProcess
             '<p>' . sprintf(
                 __('You are about to set permissions on the blog %s for user %s (%s).'),
                 '<strong>' . Html::escapeHTML(dcCore::app()->blog->name) . '</strong>',
-                '<strong>' . dcCore::app()->admin->u_id . '</strong>',
-                Html::escapeHTML(dcCore::app()->admin->u_name)
+                '<strong>' . self::$u_id . '</strong>',
+                Html::escapeHTML(self::$u_name)
             ) . '</p>' .
 
                 '<form action="' . dcCore::app()->admin->getPageURL() . '" method="post">';
@@ -252,7 +255,7 @@ class Manage extends dcNsProcess
             echo
             '<p><input type="submit" value="' . __('Save') . '" />' .
             dcCore::app()->formNonce() .
-            form::hidden('i_id', Html::escapeHTML(dcCore::app()->admin->u_id)) .
+            form::hidden('i_id', Html::escapeHTML(self::$u_id)) .
             form::hidden('set_perms', 1) . '</p>' .
                 '</form>';
         }
