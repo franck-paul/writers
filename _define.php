@@ -16,7 +16,7 @@ $this->registerModule(
     'Olivier Meunier',
     '3.2.1',
     [
-        'requires'    => [['core', '2.26']],
+        'requires'    => [['core', '2.27'], ['php', '8.1']],
         'permissions' => dcCore::app()->auth->makePermissions([
             dcAuth::PERMISSION_ADMIN,
         ]),

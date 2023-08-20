@@ -16,27 +16,25 @@ namespace Dotclear\Plugin\writers;
 
 use dcAuth;
 use dcCore;
-use dcNsProcess;
-use dcPage;
 use dcUtils;
+use Dotclear\Core\Backend\Notices;
+use Dotclear\Core\Backend\Page;
+use Dotclear\Core\Process;
 use Dotclear\Helper\Html\Html;
 use Exception;
 use form;
 
-class Manage extends dcNsProcess
+class Manage extends Process
 {
     private static ?string $u_id   = null;
     private static ?string $u_name = null;
     private static bool $chooser   = false;
-    protected static $init         = false; /** @deprecated since 2.27 */
     /**
      * Initializes the page.
      */
     public static function init(): bool
     {
-        static::$init = My::checkContext(My::MANAGE);
-
-        return static::$init;
+        return self::status(My::checkContext(My::MANAGE));
     }
 
     /**
@@ -44,13 +42,13 @@ class Manage extends dcNsProcess
      */
     public static function process(): bool
     {
-        if (!static::$init) {
+        if (!self::status()) {
             return false;
         }
 
         if (dcCore::app()->auth->isSuperAdmin()) {
             // If super-admin then redirect to blog parameters, users tab
-            dcCore::app()->adminurl->redirect('admin.blog.pref', [], '#users');
+            dcCore::app()->admin->url->redirect('admin.blog.pref', [], '#users');
         }
 
         self::$u_id    = null;
@@ -95,8 +93,8 @@ class Manage extends dcNsProcess
 
                     dcCore::app()->auth->sudo([dcCore::app(), 'setUserBlogPermissions'], self::$u_id, dcCore::app()->blog->id, $set_perms, true);
 
-                    dcPage::addSuccessNotice(sprintf(__('Permissions updated for user %s'), self::$u_name));
-                    dcCore::app()->adminurl->redirect('admin.plugin.' . My::id(), [
+                    Notices::addSuccessNotice(sprintf(__('Permissions updated for user %s'), self::$u_name));
+                    dcCore::app()->admin->url->redirect('admin.plugin.' . My::id(), [
                         'pup' => 1,
                     ]);
                 }
@@ -113,7 +111,7 @@ class Manage extends dcNsProcess
      */
     public static function render(): void
     {
-        if (!static::$init) {
+        if (!self::status()) {
             return;
         }
 
@@ -154,7 +152,7 @@ class Manage extends dcNsProcess
 
             $rsStatic = $rs->toStatic();
             $rsStatic->extend('rsExtUser');
-            $rsStatic = $rsStatic->toExtStatic();   // @phpstan-ignore-line
+            $rsStatic = $rsStatic->toStatic();
             $rsStatic->lexicalSort('user_id');
             while ($rsStatic->fetch()) {
                 if (!$rsStatic->user_super) {
@@ -162,21 +160,21 @@ class Manage extends dcNsProcess
                 }
             }
             if ($usersList !== []) {
-                $head = dcPage::jsJson('writers', $usersList) .
-                dcPage::jsLoad('js/jquery/jquery.autocomplete.js') .
-                dcPage::jsModuleLoad(My::id() . '/js/writers.js');
+                $head = Page::jsJson('writers', $usersList) .
+                Page::jsLoad('js/jquery/jquery.autocomplete.js') .
+                My::jsLoad('writers.js');
             }
         }
 
-        dcPage::openModule(__('Writers'), $head);
+        Page::openModule(__('Writers'), $head);
 
-        echo dcPage::breadcrumb(
+        echo Page::breadcrumb(
             [
                 Html::escapeHTML(dcCore::app()->blog->name) => '',
                 __('writers')                               => '',
             ]
         );
-        echo dcPage::notices();
+        echo Notices::getNotices();
 
         // Form
 
@@ -260,8 +258,8 @@ class Manage extends dcNsProcess
                 '</form>';
         }
 
-        dcPage::helpBlock('writers');
+        Page::helpBlock('writers');
 
-        dcPage::closeModule();
+        Page::closeModule();
     }
 }
