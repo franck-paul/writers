@@ -1,11 +1,11 @@
 <modules xmlns:da="http://dotaddict.org/da/">
   <module id="writers">
     <name>Writers</name>
-    <version>3.2.1</version>
+    <version>4.0</version>
     <author>Olivier Meunier</author>
     <desc>Invite people to write on your blog</desc>
-    <file>https://github.com/franck-paul/writers/releases/download/3.2.1/plugin-writers-3.2.1.zip</file>
-    <da:dcmin>2.26</da:dcmin>
+    <file>https://github.com/franck-paul/writers/releases/download/4.0/plugin-writers-4.0.zip</file>
+    <da:dcmin>2.27</da:dcmin>
     <da:details>https://plugins.dotaddict.org/dc2/details/writers</da:details>
     <da:support>https://github.com/franck-paul/writers</da:support>
   </module>
