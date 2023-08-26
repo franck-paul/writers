@@ -166,7 +166,7 @@ class Manage extends Process
             }
         }
 
-        Page::openModule(__('Writers'), $head);
+        Page::openModule(My::name(), $head);
 
         echo Page::breadcrumb(
             [
@@ -213,7 +213,8 @@ class Manage extends Process
             '<p><label class="classic" for="i_id">' . __('Author ID (login): ') . ' ' .
             form::field('i_id', 32, 32, self::$u_id) . '</label> ' .
             '<input type="submit" value="' . __('Invite') . '" />' .
-            dcCore::app()->formNonce() . '</p>' .
+            My::parsedHiddenFields() .
+            '</p>' .
             '</form>';
         } elseif (self::$u_id) {
             if (isset($blog_users[self::$u_id])) {
@@ -252,10 +253,12 @@ class Manage extends Process
 
             echo
             '<p><input type="submit" value="' . __('Save') . '" />' .
-            dcCore::app()->formNonce() .
-            form::hidden('i_id', Html::escapeHTML(self::$u_id)) .
-            form::hidden('set_perms', 1) . '</p>' .
-                '</form>';
+            My::parsedHiddenFields([
+                'i_id'      => Html::escapeHTML(self::$u_id),
+                'set_perms' => (string) 1,
+            ]) .
+            '</p>' .
+            '</form>';
         }
 
         Page::helpBlock('writers');
