@@ -17,6 +17,7 @@ namespace Dotclear\Plugin\writers;
 use dcAuth;
 use dcCore;
 use dcUtils;
+use Dotclear\App;
 use Dotclear\Core\Backend\Notices;
 use Dotclear\Core\Backend\Page;
 use Dotclear\Core\Process;
@@ -48,7 +49,7 @@ class Manage extends Process
 
         if (dcCore::app()->auth->isSuperAdmin()) {
             // If super-admin then redirect to blog parameters, users tab
-            dcCore::app()->admin->url->redirect('admin.blog.pref', [], '#users');
+            dcCore::app()->adminurl->redirect('admin.blog.pref', [], '#users');
         }
 
         self::$u_id    = null;
@@ -91,10 +92,10 @@ class Manage extends Process
                         }
                     }
 
-                    dcCore::app()->auth->sudo([dcCore::app(), 'setUserBlogPermissions'], self::$u_id, dcCore::app()->blog->id, $set_perms, true);
+                    dcCore::app()->auth->sudo(App::users()->setUserBlogPermissions(...), self::$u_id, App::blog()->id(), $set_perms, true);
 
                     Notices::addSuccessNotice(sprintf(__('Permissions updated for user %s'), self::$u_name));
-                    dcCore::app()->admin->url->redirect('admin.plugin.' . My::id(), [
+                    dcCore::app()->adminurl->redirect('admin.plugin.' . My::id(), [
                         'pup' => 1,
                     ]);
                 }
@@ -115,7 +116,7 @@ class Manage extends Process
             return;
         }
 
-        $blog_users = dcCore::app()->getBlogPermissions(dcCore::app()->blog->id, false);
+        $blog_users = dcCore::app()->getBlogPermissions(App::blog()->id(), false);
         $perm_types = dcCore::app()->auth->getPermissionsTypes();
 
         if (!empty($_GET['u_id'])) {
@@ -170,8 +171,8 @@ class Manage extends Process
 
         echo Page::breadcrumb(
             [
-                Html::escapeHTML(dcCore::app()->blog->name) => '',
-                __('writers')                               => '',
+                Html::escapeHTML(App::blog()->name()) => '',
+                __('writers')                         => '',
             ]
         );
         echo Notices::getNotices();
@@ -227,7 +228,7 @@ class Manage extends Process
             echo
             '<p>' . sprintf(
                 __('You are about to set permissions on the blog %s for user %s (%s).'),
-                '<strong>' . Html::escapeHTML(dcCore::app()->blog->name) . '</strong>',
+                '<strong>' . Html::escapeHTML(App::blog()->name()) . '</strong>',
                 '<strong>' . self::$u_id . '</strong>',
                 Html::escapeHTML(self::$u_name)
             ) . '</p>' .
