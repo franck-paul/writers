@@ -14,9 +14,6 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\writers;
 
-use dcAuth;
-use dcCore;
-use dcUtils;
 use Dotclear\App;
 use Dotclear\Core\Backend\Notices;
 use Dotclear\Core\Backend\Page;
@@ -47,9 +44,9 @@ class Manage extends Process
             return false;
         }
 
-        if (dcCore::app()->auth->isSuperAdmin()) {
+        if (App::auth()->isSuperAdmin()) {
             // If super-admin then redirect to blog parameters, users tab
-            dcCore::app()->adminurl->redirect('admin.blog.pref', [], '#users');
+            App::backend()->url()->redirect('admin.blog.pref', [], '#users');
         }
 
         self::$u_id    = null;
@@ -58,7 +55,7 @@ class Manage extends Process
 
         if (!empty($_POST['i_id'])) {
             try {
-                $rs = dcCore::app()->getUser($_POST['i_id']);
+                $rs = App::users()->getUser($_POST['i_id']);
 
                 if ($rs->isEmpty()) {
                     throw new Exception(__('Writer does not exists.'));
@@ -68,12 +65,12 @@ class Manage extends Process
                     throw new Exception(__('You cannot add or update this writer.'));
                 }
 
-                if ($rs->user_id == dcCore::app()->auth->userID()) {
+                if ($rs->user_id == App::auth()->userID()) {
                     throw new Exception(__('You cannot change your own permissions.'));
                 }
 
                 self::$u_id   = $rs->user_id;
-                self::$u_name = dcUtils::getUserCN(self::$u_id, $rs->user_name, $rs->user_firstname, $rs->user_displayname);
+                self::$u_name = App::users()->getUserCN(self::$u_id, $rs->user_name, $rs->user_firstname, $rs->user_displayname);
                 unset($rs);
                 self::$chooser = true;
 
@@ -82,7 +79,7 @@ class Manage extends Process
 
                     if (!empty($_POST['perm'])) {
                         foreach ($_POST['perm'] as $perm_id => $v) {
-                            if (!DC_WR_ALLOW_ADMIN && $perm_id === dcAuth::PERMISSION_ADMIN) {    // @phpstan-ignore-line
+                            if (!DC_WR_ALLOW_ADMIN && $perm_id === App::auth()::PERMISSION_ADMIN) {    // @phpstan-ignore-line
                                 continue;
                             }
 
@@ -92,15 +89,15 @@ class Manage extends Process
                         }
                     }
 
-                    dcCore::app()->auth->sudo(App::users()->setUserBlogPermissions(...), self::$u_id, App::blog()->id(), $set_perms, true);
+                    App::auth()->sudo(App::users()->setUserBlogPermissions(...), self::$u_id, App::blog()->id(), $set_perms, true);
 
                     Notices::addSuccessNotice(sprintf(__('Permissions updated for user %s'), self::$u_name));
-                    dcCore::app()->adminurl->redirect('admin.plugin.' . My::id(), [
+                    My::redirect([
                         'pup' => 1,
                     ]);
                 }
             } catch (Exception $e) {
-                dcCore::app()->error->add($e->getMessage());
+                App::error()->add($e->getMessage());
             }
         }
 
@@ -116,8 +113,8 @@ class Manage extends Process
             return;
         }
 
-        $blog_users = dcCore::app()->getBlogPermissions(App::blog()->id(), false);
-        $perm_types = dcCore::app()->auth->getPermissionsTypes();
+        $blog_users = App::blogs()->getBlogPermissions(App::blog()->id(), false);
+        $perm_types = App::auth()->getPermissionsTypes();
 
         if (!empty($_GET['u_id'])) {
             try {
@@ -125,12 +122,12 @@ class Manage extends Process
                     throw new Exception(__('Writer does not exists.'));
                 }
 
-                if ($_GET['u_id'] == dcCore::app()->auth->userID()) {
+                if ($_GET['u_id'] == App::auth()->userID()) {
                     throw new Exception(__('You cannot change your own permissions.'));
                 }
 
                 self::$u_id   = $_GET['u_id'];
-                self::$u_name = dcUtils::getUserCN(
+                self::$u_name = App::users()->getUserCN(
                     self::$u_id,
                     $blog_users[self::$u_id]['name'],
                     $blog_users[self::$u_id]['firstname'],
@@ -138,7 +135,7 @@ class Manage extends Process
                 );
                 self::$chooser = true;
             } catch (Exception $e) {
-                dcCore::app()->error->add($e->getMessage());
+                App::error()->add($e->getMessage());
             }
         }
 
@@ -146,7 +143,7 @@ class Manage extends Process
         if (!self::$chooser) {
             $usersList = [];
 
-            $rs = dcCore::app()->getUsers([
+            $rs = App::users()->getUsers([
                 'limit' => 100,
                 'order' => 'nb_post ASC',
             ]);
@@ -186,16 +183,16 @@ class Manage extends Process
                 echo '<p>' . __('No writers') . '</p>';
             } else {
                 foreach ($blog_users as $k => $v) {
-                    if ((is_countable($v['p']) ? count($v['p']) : 0) > 0 && $k != dcCore::app()->auth->userID()) {
+                    if ((is_countable($v['p']) ? count($v['p']) : 0) > 0 && $k != App::auth()->userID()) {
                         echo
                         '<h4>' . Html::escapeHTML($k) .
-                        ' (' . Html::escapeHTML(dcUtils::getUserCN(
+                        ' (' . Html::escapeHTML(App::users()->getUserCN(
                             $k,
                             $v['name'],
                             $v['firstname'],
                             $v['displayname']
                         )) . ') - ' .
-                        '<a href="' . dcCore::app()->admin->getPageURL() . '&amp;u_id=' . Html::escapeHTML($k) . '">' .
+                        '<a href="' . App::backend()->getPageURL() . '&amp;u_id=' . Html::escapeHTML($k) . '">' .
                         __('change permissions') . '</a></h4>';
 
                         echo '<ul>';
@@ -210,7 +207,7 @@ class Manage extends Process
             echo '<h3>' . __('Invite a new writer') . '</h3>';
 
             echo
-            '<form action="' . dcCore::app()->admin->getPageURL() . '" method="post">' .
+            '<form action="' . App::backend()->getPageURL() . '" method="post">' .
             '<p><label class="classic" for="i_id">' . __('Author ID (login): ') . ' ' .
             form::field('i_id', 32, 32, self::$u_id) . '</label> ' .
             '<input type="submit" value="' . __('Invite') . '" />' .
@@ -224,7 +221,7 @@ class Manage extends Process
                 $user_perm = [];
             }
 
-            echo '<p><a class="back" href="' . Html::escapeURL(dcCore::app()->admin->getPageURL() . '&pup=1') . '">' . __('Back') . '</a></p>';
+            echo '<p><a class="back" href="' . Html::escapeURL(App::backend()->getPageURL() . '&pup=1') . '">' . __('Back') . '</a></p>';
             echo
             '<p>' . sprintf(
                 __('You are about to set permissions on the blog %s for user %s (%s).'),
@@ -233,10 +230,10 @@ class Manage extends Process
                 Html::escapeHTML(self::$u_name)
             ) . '</p>' .
 
-                '<form action="' . dcCore::app()->admin->getPageURL() . '" method="post">';
+                '<form action="' . App::backend()->getPageURL() . '" method="post">';
 
             foreach ($perm_types as $perm_id => $perm) {
-                if (!DC_WR_ALLOW_ADMIN && $perm_id === dcAuth::PERMISSION_ADMIN) {    // @phpstan-ignore-line
+                if (!DC_WR_ALLOW_ADMIN && $perm_id === App::auth()::PERMISSION_ADMIN) {    // @phpstan-ignore-line
                     continue;
                 }
 

@@ -1,15 +1,13 @@
 <?php
-
-# -- BEGIN LICENSE BLOCK ----------------------------------
-#
-# This file is part of Writers, a plugin for Dotclear.
-#
-# Copyright (c) 2003-2008 Olivier Meunier and contributors
-# Licensed under the GPL version 2.0 license.
-# See LICENSE file or
-# http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
-#
-# -- END LICENSE BLOCK ------------------------------------
-if (!isset(dcCore::app()->resources['help']['writers'])) {
-    dcCore::app()->resources['help']['writers'] = __DIR__ . '/help/writers.html';
-}
+/**
+ * @brief writers, a plugin for Dotclear 2
+ *
+ * @package Dotclear
+ * @subpackage Plugins
+ *
+ * @author Franck Paul and contributors
+ *
+ * @copyright Franck Paul carnet.franck.paul@gmail.com
+ * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
+ */
+\Dotclear\App::backend()->resources()->set('help', 'writers', __DIR__ . '/help/writers.html');

@@ -17,11 +17,9 @@ $this->registerModule(
     '4.0',
     [
         'requires'    => [['core', '2.28']],
-        'permissions' => dcCore::app()->auth->makePermissions([
-            dcAuth::PERMISSION_ADMIN,
-        ]),
-        'type'     => 'plugin',
-        'settings' => [],
+        'permissions' => 'My',
+        'type'        => 'plugin',
+        'settings'    => [],
 
         'details'    => 'https://plugins.dotaddict.org/dc2/details/writers',
         'support'    => 'https://github.com/franck-paul/writers',
