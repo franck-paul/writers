@@ -79,7 +79,7 @@ class Manage extends Process
 
                     if (!empty($_POST['perm'])) {
                         foreach ($_POST['perm'] as $perm_id => $v) {
-                            if (!DC_WR_ALLOW_ADMIN && $perm_id === App::auth()::PERMISSION_ADMIN) {    // @phpstan-ignore-line
+                            if (defined('DC_WR_ALLOW_ADMIN') && !DC_WR_ALLOW_ADMIN && $perm_id === App::auth()::PERMISSION_ADMIN) {
                                 continue;
                             }
 
@@ -233,7 +233,7 @@ class Manage extends Process
                 '<form action="' . App::backend()->getPageURL() . '" method="post">';
 
             foreach ($perm_types as $perm_id => $perm) {
-                if (!DC_WR_ALLOW_ADMIN && $perm_id === App::auth()::PERMISSION_ADMIN) {    // @phpstan-ignore-line
+                if (defined('DC_WR_ALLOW_ADMIN') && !DC_WR_ALLOW_ADMIN && $perm_id === App::auth()::PERMISSION_ADMIN) {
                     continue;
                 }
 
