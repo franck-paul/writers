@@ -25,8 +25,11 @@ use form;
 class Manage extends Process
 {
     private static ?string $u_id   = null;
+
     private static ?string $u_name = null;
+
     private static bool $chooser   = false;
+
     /**
      * Initializes the page.
      */
@@ -157,6 +160,7 @@ class Manage extends Process
                     $usersList[] = $rsStatic->user_id;
                 }
             }
+
             if ($usersList !== []) {
                 $head = Page::jsJson('writers', $usersList) .
                 Page::jsLoad('js/jquery/jquery.autocomplete.js') .
@@ -199,6 +203,7 @@ class Manage extends Process
                         foreach ($v['p'] as $p => $V) {
                             echo '<li>' . __($perm_types[$p]) . '</li>';
                         }
+
                         echo '</ul>';
                     }
                 }
@@ -215,12 +220,7 @@ class Manage extends Process
             '</p>' .
             '</form>';
         } elseif (self::$u_id) {
-            if (isset($blog_users[self::$u_id])) {
-                $user_perm = $blog_users[self::$u_id]['p'];
-            } else {
-                $user_perm = [];
-            }
-
+            $user_perm = isset($blog_users[self::$u_id]) ? $blog_users[self::$u_id]['p'] : [];
             echo '<p><a class="back" href="' . Html::escapeURL(App::backend()->getPageURL() . '&pup=1') . '">' . __('Back') . '</a></p>';
             echo
             '<p>' . sprintf(
@@ -231,7 +231,6 @@ class Manage extends Process
             ) . '</p>' .
 
                 '<form action="' . App::backend()->getPageURL() . '" method="post">';
-
             foreach ($perm_types as $perm_id => $perm) {
                 if (defined('DC_WR_ALLOW_ADMIN') && !DC_WR_ALLOW_ADMIN && $perm_id === App::auth()::PERMISSION_ADMIN) {
                     continue;
