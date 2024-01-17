@@ -18,17 +18,29 @@ use Dotclear\App;
 use Dotclear\Core\Backend\Notices;
 use Dotclear\Core\Backend\Page;
 use Dotclear\Core\Process;
+use Dotclear\Helper\Html\Form\Checkbox;
+use Dotclear\Helper\Html\Form\Div;
+use Dotclear\Helper\Html\Form\Fieldset;
+use Dotclear\Helper\Html\Form\Form;
+use Dotclear\Helper\Html\Form\Input;
+use Dotclear\Helper\Html\Form\Label;
+use Dotclear\Helper\Html\Form\Legend;
+use Dotclear\Helper\Html\Form\Li;
+use Dotclear\Helper\Html\Form\Link;
+use Dotclear\Helper\Html\Form\Para;
+use Dotclear\Helper\Html\Form\Submit;
+use Dotclear\Helper\Html\Form\Text;
+use Dotclear\Helper\Html\Form\Ul;
 use Dotclear\Helper\Html\Html;
 use Exception;
-use form;
 
 class Manage extends Process
 {
-    private static ?string $u_id   = null;
+    private static ?string $u_id = null;
 
     private static ?string $u_name = null;
 
-    private static bool $chooser   = false;
+    private static bool $chooser = false;
 
     /**
      * Initializes the page.
@@ -49,7 +61,7 @@ class Manage extends Process
 
         if (App::auth()->isSuperAdmin()) {
             // If super-admin then redirect to blog parameters, users tab
-            App::backend()->url()->redirect('admin.blog.pref', [], '#users');
+            //            App::backend()->url()->redirect('admin.blog.pref', [], '#users');
         }
 
         self::$u_id    = null;
@@ -118,6 +130,7 @@ class Manage extends Process
 
         $blog_users = App::blogs()->getBlogPermissions(App::blog()->id(), false);
         $perm_types = App::auth()->getPermissionsTypes();
+        $perm_users = array_keys($blog_users);
 
         if (!empty($_GET['u_id'])) {
             try {
@@ -148,15 +161,14 @@ class Manage extends Process
 
             $rs = App::users()->getUsers([
                 'limit' => 100,
-                'order' => 'nb_post ASC',
-            ]);
-
+                'order' => 'nb_post DESC',
+            ])->toStatic();
+            $rs->extend('rsExtUser');
             $rsStatic = $rs->toStatic();
-            $rsStatic->extend('rsExtUser');
-            $rsStatic = $rsStatic->toStatic();
             $rsStatic->lexicalSort('user_id');
             while ($rsStatic->fetch()) {
-                if (!$rsStatic->user_super) {
+                if (!$rsStatic->user_super && !in_array($rsStatic->user_id, $perm_users)) {
+                    // Keep only non superadmin and not already set user
                     $usersList[] = $rsStatic->user_id;
                 }
             }
@@ -181,81 +193,137 @@ class Manage extends Process
         // Form
 
         if (!self::$chooser) {
-            echo '<h3>' . __('Active writers') . '</h3>';
-
+            // Users list
+            $users = [];
             if (count($blog_users) <= 1) {
-                echo '<p>' . __('No writers') . '</p>';
+                $users[] = (new Para())->items([
+                    (new Text(null, __('No writers'))),
+                ]);
             } else {
                 foreach ($blog_users as $k => $v) {
-                    if ((is_countable($v['p']) ? count($v['p']) : 0) > 0 && $k != App::auth()->userID()) {
-                        echo
-                        '<h4>' . Html::escapeHTML($k) .
-                        ' (' . Html::escapeHTML(App::users()->getUserCN(
+                    if (isset($v['p']) && $v['p'] > 0 && $k !== App::auth()->userID()) {
+                        $name = Html::escapeHTML(App::users()->getUserCN(
                             $k,
                             $v['name'],
                             $v['firstname'],
                             $v['displayname']
-                        )) . ') - ' .
-                        '<a href="' . App::backend()->getPageURL() . '&amp;u_id=' . Html::escapeHTML($k) . '">' .
-                        __('change permissions') . '</a></h4>';
-
-                        echo '<ul>';
-                        foreach ($v['p'] as $p => $V) {
-                            echo '<li>' . __($perm_types[$p]) . '</li>';
+                        ));
+                        $permissions = [];
+                        foreach ($v['p'] as $permission => $value) {
+                            $permissions[] = (new Li())->text(__($perm_types[$permission]));
                         }
-
-                        echo '</ul>';
+                        $users[] = (new Fieldset('user-' . $k))
+                            ->legend(new Legend(Html::escapeHTML($k) . ' / ' . $name))
+                            ->items([
+                                (new Para())
+                                ->items([
+                                    (new Ul())
+                                    ->items($permissions),
+                                    (new Link('perm-' . $k))
+                                    ->class('button')
+                                    ->text(__('change permissions'))
+                                    ->href(App::backend()->getPageURL() . '&u_id=' . Html::escapeHTML($k)),
+                                ]),
+                            ]);
                     }
                 }
             }
 
-            echo '<h3>' . __('Invite a new writer') . '</h3>';
+            echo
+            (new Div('act_writers'))
+            ->items([
+                (new Text('h3', __('Active writers'))),
+                ...$users,
+            ])
+            ->render();
 
             echo
-            '<form action="' . App::backend()->getPageURL() . '" method="post">' .
-            '<p><label class="classic" for="i_id">' . __('Author ID (login): ') . ' ' .
-            form::field('i_id', 32, 32, self::$u_id) . '</label> ' .
-            '<input type="submit" value="' . __('Invite') . '" />' .
-            My::parsedHiddenFields() .
-            '</p>' .
-            '</form>';
+            (new Div())
+            ->items([
+                (new Text('h3', __('Invite a new writer'))),
+                (new Form('add_writer'))
+                ->action(App::backend()->getPageURL())
+                ->method('post')
+                ->fields([
+                    (new Para())->items([
+                        (new Input('i_id'))
+                            ->size(32)
+                            ->maxlength(32)
+                            ->value(Html::escapeHTML((string) self::$u_id))
+                            ->required(true)
+                            ->label((new Label(__('Author ID (login): '), Label::OUTSIDE_TEXT_BEFORE))->class('classic')),
+                    ]),
+                    // Submit
+                    (new Para())->items([
+                        (new Submit(['frmsubmit']))
+                            ->value(__('Invite')),
+                        ...My::hiddenFields(),
+                    ]),
+                ]),
+            ])
+            ->render();
         } elseif (self::$u_id) {
+            // Change user permission
             $user_perm = isset($blog_users[self::$u_id]) ? $blog_users[self::$u_id]['p'] : [];
-            echo '<p><a class="back" href="' . Html::escapeURL(App::backend()->getPageURL() . '&pup=1') . '">' . __('Back') . '</a></p>';
-            echo
-            '<p>' . sprintf(
-                __('You are about to set permissions on the blog %s for user %s (%s).'),
-                '<strong>' . Html::escapeHTML(App::blog()->name()) . '</strong>',
-                '<strong>' . self::$u_id . '</strong>',
-                Html::escapeHTML(self::$u_name)
-            ) . '</p>' .
 
-                '<form action="' . App::backend()->getPageURL() . '" method="post">';
+            echo
+            (new Para())
+            ->items([
+                (new Link())
+                ->class('back')
+                ->text(__('Back'))
+                ->href(App::backend()->getPageURL() . '&pup=1'),
+            ])
+            ->render();
+
+            echo
+            (new Para())
+            ->items([
+                (new Text(
+                    null,
+                    sprintf(
+                        __('You are about to set permissions on the blog %s for user %s (%s).'),
+                        '<strong>' . Html::escapeHTML(App::blog()->name()) . '</strong>',
+                        '<strong>' . self::$u_id . '</strong>',
+                        Html::escapeHTML(self::$u_name)
+                    )
+                )),
+            ])
+            ->render();
+
+            $permissions = [];
             foreach ($perm_types as $perm_id => $perm) {
                 if (defined('DC_WR_ALLOW_ADMIN') && !DC_WR_ALLOW_ADMIN && $perm_id === App::auth()::PERMISSION_ADMIN) {
                     continue;
                 }
 
-                $checked = isset($user_perm[$perm_id]) && $user_perm[$perm_id];
-
-                echo
-                '<p><label class="classic">' .
-                form::checkbox(
-                    ['perm[' . Html::escapeHTML($perm_id) . ']'],
-                    1,
-                    $checked
-                ) . ' ' .
-                __($perm) . '</label></p>';
+                $checked       = isset($user_perm[$perm_id]) && $user_perm[$perm_id];
+                $permissions[] = (new Para())->items([
+                    (new Checkbox(
+                        ['perm[' . Html::escapeHTML($perm_id) . ']', 'perm-' . $perm_id],
+                        $checked
+                    ))
+                    ->label((new Label(__($perm), Label::INSIDE_LABEL_AFTER))->class('classic')),
+                ]);
             }
 
             echo
-            '<p><input type="submit" value="' . __('Save') . '" />' .
-            My::parsedHiddenFields([
-                'i_id'      => Html::escapeHTML(self::$u_id),
-                'set_perms' => (string) 1,
-            ]) .
-            '</p>' .
-            '</form>';
+            (new Form('set-perms'))
+            ->action(App::backend()->getPageURL())
+            ->method('post')
+            ->fields([
+                ...$permissions,
+                // Submit
+                (new Para())->items([
+                    (new Submit(['frmsubmit']))
+                        ->value(__('Save')),
+                    ...My::hiddenFields([
+                        'i_id'      => Html::escapeHTML(self::$u_id),
+                        'set_perms' => (string) 1,
+                    ]),
+                ]),
+            ])
+            ->render();
         }
 
         Page::helpBlock('writers');
