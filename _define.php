@@ -14,7 +14,7 @@ $this->registerModule(
     'Writers',
     'Invite people to write on your blog',
     'Olivier Meunier',
-    '5.2',
+    '5.3',
     [
         'requires'    => [['core', '2.28']],
         'permissions' => 'My',
