@@ -20,11 +20,9 @@ use Dotclear\Core\Backend\Page;
 use Dotclear\Core\Process;
 use Dotclear\Helper\Html\Form\Checkbox;
 use Dotclear\Helper\Html\Form\Div;
-use Dotclear\Helper\Html\Form\Fieldset;
 use Dotclear\Helper\Html\Form\Form;
 use Dotclear\Helper\Html\Form\Input;
 use Dotclear\Helper\Html\Form\Label;
-use Dotclear\Helper\Html\Form\Legend;
 use Dotclear\Helper\Html\Form\Li;
 use Dotclear\Helper\Html\Form\Link;
 use Dotclear\Helper\Html\Form\Para;
@@ -61,7 +59,7 @@ class Manage extends Process
 
         if (App::auth()->isSuperAdmin()) {
             // If super-admin then redirect to blog parameters, users tab
-            //            App::backend()->url()->redirect('admin.blog.pref', [], '#users');
+            App::backend()->url()->redirect('admin.blog.pref', [], '#users');
         }
 
         self::$u_id    = null;
@@ -212,13 +210,18 @@ class Manage extends Process
                         foreach ($v['p'] as $permission => $value) {
                             $permissions[] = (new Li())->text(__($perm_types[$permission]));
                         }
-                        $users[] = (new Fieldset('user-' . $k))
-                            ->legend(new Legend(Html::escapeHTML($k) . ' / ' . $name))
+                        $users[] = (new Div('user-' . $k))
+                            ->class('user-perm')
                             ->items([
+                                (new Text('h4', Html::escapeHTML($k) . ' (' . $name . ')')),
                                 (new Para())
                                 ->items([
+                                    (new Text('h5', __('Permissions:'))),
                                     (new Ul())
                                     ->items($permissions),
+                                ]),
+                                (new Para())
+                                ->items([
                                     (new Link('perm-' . $k))
                                     ->class('button')
                                     ->text(__('change permissions'))
@@ -230,10 +233,10 @@ class Manage extends Process
             }
 
             echo
-            (new Div('act_writers'))
+            (new Div('part-users'))
             ->items([
                 (new Text('h3', __('Active writers'))),
-                ...$users,
+                (new Div())->items($users),
             ])
             ->render();
 
