@@ -59,7 +59,7 @@ class Manage extends Process
 
         if (App::auth()->isSuperAdmin()) {
             // If super-admin then redirect to blog parameters, users tab
-            App::backend()->url()->redirect('admin.blog.pref', [], '#users');
+            //            App::backend()->url()->redirect('admin.blog.pref', [], '#users');
         }
 
         self::$u_id    = null;
@@ -214,12 +214,9 @@ class Manage extends Process
                             ->class('user-perm')
                             ->items([
                                 (new Text('h4', Html::escapeHTML($k) . ' (' . $name . ')')),
-                                (new Para())
-                                ->items([
-                                    (new Text('h5', __('Permissions:'))),
-                                    (new Ul())
-                                    ->items($permissions),
-                                ]),
+                                (new Text('h5', __('Permissions:'))),
+                                (new Ul())
+                                ->items($permissions),
                                 (new Para())
                                 ->items([
                                     (new Link('perm-' . $k))
