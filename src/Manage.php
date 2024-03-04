@@ -59,7 +59,7 @@ class Manage extends Process
 
         if (App::auth()->isSuperAdmin()) {
             // If super-admin then redirect to blog parameters, users tab
-            //            App::backend()->url()->redirect('admin.blog.pref', [], '#users');
+            App::backend()->url()->redirect('admin.blog.pref', [], '#users');
         }
 
         self::$u_id    = null;
