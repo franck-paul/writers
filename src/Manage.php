@@ -92,7 +92,7 @@ class Manage extends Process
 
                     if (!empty($_POST['perm'])) {
                         foreach ($_POST['perm'] as $perm_id => $v) {
-                            if (defined('DC_WR_ALLOW_ADMIN') && !DC_WR_ALLOW_ADMIN && $perm_id === App::auth()::PERMISSION_ADMIN) {
+                            if (defined('DC_WR_ALLOW_ADMIN') && !constant('DC_WR_ALLOW_ADMIN') && $perm_id === App::auth()::PERMISSION_ADMIN) {
                                 continue;
                             }
 
@@ -293,7 +293,7 @@ class Manage extends Process
 
             $permissions = [];
             foreach ($perm_types as $perm_id => $perm) {
-                if (defined('DC_WR_ALLOW_ADMIN') && !DC_WR_ALLOW_ADMIN && $perm_id === App::auth()::PERMISSION_ADMIN) {
+                if (defined('DC_WR_ALLOW_ADMIN') && !constant('DC_WR_ALLOW_ADMIN') && $perm_id === App::auth()::PERMISSION_ADMIN) {
                     continue;
                 }
 
