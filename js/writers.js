@@ -1,7 +1,7 @@
 /*global $, dotclear */
 'use strict';
 
-$(() => {
+dotclear.ready(() => {
   const i_id = $('#i_id');
   if (i_id.length) {
     const usersList = dotclear.getData('writers');
