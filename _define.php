@@ -15,9 +15,9 @@ $this->registerModule(
     'Writers',
     'Invite people to write on your blog',
     'Olivier Meunier',
-    '5.5',
+    '5.6',
     [
-        'date'        => '2003-08-13T13:42:00+0100',
+        'date'        => '2025-02-09T16:10:41+0100',
         'requires'    => [['core', '2.29']],
         'permissions' => 'My',
         'type'        => 'plugin',
