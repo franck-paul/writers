@@ -1,11 +1,11 @@
-/*global $, dotclear */
+/*global jQuery, dotclear */
 'use strict';
 
 dotclear.ready(() => {
-  const i_id = $('#i_id');
-  if (i_id.length) {
+  const i_id = document.getElementById('i_id');
+  if (i_id) {
     const usersList = dotclear.getData('writers');
-    i_id.autocomplete(usersList, {
+    jQuery(i_id).autocomplete(usersList, {
       delay: 1000,
       matchSubset: true,
       matchContains: true,
