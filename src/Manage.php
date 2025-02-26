@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief writers, a plugin for Dotclear 2
  *
@@ -70,7 +71,7 @@ class Manage extends Process
             try {
                 $rs = App::users()->getUser($_POST['i_id']);
 
-                if ($rs->isEmpty()) {
+                if ($rs->isEmpty() || is_null($rs->user_id)) {
                     throw new Exception(__('Writer does not exists.'));
                 }
 
