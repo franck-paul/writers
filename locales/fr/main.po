@@ -1,19 +1,19 @@
-#
+# 
 # Translators:
-# Franck Paul <carnet.franck.paul@gmail.com>, 2023
-#
+# Franck Paul <carnet.franck.paul@gmail.com>, 2025
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: writers-dotclear-2-plugin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-27 16:07+0200\n"
 "PO-Revision-Date: 2023-06-09 17:02+0000\n"
-"Last-Translator: Franck Paul <carnet.franck.paul@gmail.com>, 2023\n"
+"Last-Translator: Franck Paul <carnet.franck.paul@gmail.com>, 2025\n"
 "Language-Team: French (https://app.transifex.com/open-time/teams/109573/fr/)\n"
-"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: fr\n"
 "Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 "X-Crowdin-File: /master/locales/_pot/main.pot\n"
 "X-Crowdin-Language: en\n"
@@ -38,9 +38,8 @@ msgstr "Permissions mises à jour pour l'utilisatrice ou l'utilisateur %s"
 msgid "No writers"
 msgstr "Aucun rédacteur"
 
-#, fuzzy
 msgid "Permissions:"
-msgstr "changer les permissions"
+msgstr "Permissions :"
 
 msgid "change permissions"
 msgstr "changer les permissions"
@@ -60,12 +59,12 @@ msgstr "Inviter"
 msgid "Back"
 msgstr "Retour"
 
-#, fuzzy, php-format
-msgid "You are about to set permissions on the blog %1$s for user %2$s (%3$s)."
-msgstr "Vous allez définir les permissions de l'utilisateur %2$s (%3$s) sur le blog %1$s"
+#, php-format
+msgid ""
+"You are about to set permissions on the blog %1$s for user %2$s (%3$s)."
+msgstr ""
+"Vous êtes sur le point de définir des autorisations sur le blog %1$s pour "
+"l'utilisateur %2$s (%3$s)."
 
 msgid "Save"
 msgstr "Enregistrer"
-
-#~ msgid "Writers"
-#~ msgstr "Rédacteurs"
