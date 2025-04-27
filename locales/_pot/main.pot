@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dotclear 2 writers module\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-09 19:00+0200\n"
+"POT-Creation-Date: 2025-04-27 16:07+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,69 +16,67 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../git-plugins/writers/src/Backend.php:28
-#: ../git-plugins/writers/src/Backend.php:40
-#: ../git-plugins/writers/src/Manage.php:166
-msgid "Writers"
-msgstr ""
-
-#: ../git-plugins/writers/src/Backend.php:28
-#: ../git-plugins/writers/src/Manage.php:171
+#: ../git-plugins/writers/src/Backend.php:26
+#: ../git-plugins/writers/src/Manage.php:187
 msgid "writers"
 msgstr ""
 
-#: ../git-plugins/writers/src/Manage.php:62
-#: ../git-plugins/writers/src/Manage.php:121
+#: ../git-plugins/writers/src/Manage.php:75
+#: ../git-plugins/writers/src/Manage.php:137
 msgid "Writer does not exists."
 msgstr ""
 
-#: ../git-plugins/writers/src/Manage.php:66
+#: ../git-plugins/writers/src/Manage.php:79
 msgid "You cannot add or update this writer."
 msgstr ""
 
-#: ../git-plugins/writers/src/Manage.php:70
-#: ../git-plugins/writers/src/Manage.php:125
+#: ../git-plugins/writers/src/Manage.php:83
+#: ../git-plugins/writers/src/Manage.php:141
 msgid "You cannot change your own permissions."
 msgstr ""
 
-#: ../git-plugins/writers/src/Manage.php:95
+#: ../git-plugins/writers/src/Manage.php:108
 #, php-format
 msgid "Permissions updated for user %s"
 msgstr ""
 
-#: ../git-plugins/writers/src/Manage.php:179
-msgid "Active writers"
-msgstr ""
-
-#: ../git-plugins/writers/src/Manage.php:182
+#: ../git-plugins/writers/src/Manage.php:199
 msgid "No writers"
 msgstr ""
 
-#: ../git-plugins/writers/src/Manage.php:195
-msgid "change permissions"
-msgstr ""
-
-#: ../git-plugins/writers/src/Manage.php:206
-msgid "Invite a new writer"
-msgstr ""
-
-#: ../git-plugins/writers/src/Manage.php:210
-msgid "Author ID (login): "
-msgstr ""
-
-#: ../git-plugins/writers/src/Manage.php:212
-msgid "Invite"
-msgstr ""
-
-#: ../git-plugins/writers/src/Manage.php:222
-msgid "Back"
+#: ../git-plugins/writers/src/Manage.php:218
+msgid "Permissions:"
 msgstr ""
 
 #: ../git-plugins/writers/src/Manage.php:225
-#, php-format
-msgid "You are about to set permissions on the blog %s for user %s (%s)."
+msgid "change permissions"
 msgstr ""
 
-#: ../git-plugins/writers/src/Manage.php:251
+#: ../git-plugins/writers/src/Manage.php:236
+msgid "Active writers"
+msgstr ""
+
+#: ../git-plugins/writers/src/Manage.php:244
+msgid "Invite a new writer"
+msgstr ""
+
+#: ../git-plugins/writers/src/Manage.php:255
+msgid "Author ID (login): "
+msgstr ""
+
+#: ../git-plugins/writers/src/Manage.php:260
+msgid "Invite"
+msgstr ""
+
+#: ../git-plugins/writers/src/Manage.php:275
+msgid "Back"
+msgstr ""
+
+#: ../git-plugins/writers/src/Manage.php:286
+#, php-format
+msgid "You are about to set permissions on the blog %1$s for user %2$s (%3$s)."
+msgstr ""
+
+#: ../git-plugins/writers/src/Manage.php:320
 msgid "Save"
 msgstr ""

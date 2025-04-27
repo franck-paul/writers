@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: writers-dotclear-2-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-09 19:00+0200\n"
+"POT-Creation-Date: 2025-04-27 16:07+0200\n"
 "PO-Revision-Date: 2020-04-30 12:25\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: English\n"
@@ -14,9 +14,6 @@ msgstr ""
 "X-Crowdin-Project: writers-dotclear-2-plugin\n"
 "X-Crowdin-Language: en\n"
 "X-Crowdin-File: /master/locales/_pot/main.pot\n"
-
-msgid "Writers"
-msgstr ""
 
 msgid "writers"
 msgstr ""
@@ -34,13 +31,16 @@ msgstr ""
 msgid "Permissions updated for user %s"
 msgstr ""
 
-msgid "Active writers"
-msgstr ""
-
 msgid "No writers"
 msgstr ""
 
+msgid "Permissions:"
+msgstr ""
+
 msgid "change permissions"
+msgstr ""
+
+msgid "Active writers"
 msgstr ""
 
 msgid "Invite a new writer"
@@ -56,7 +56,7 @@ msgid "Back"
 msgstr ""
 
 #, php-format
-msgid "You are about to set permissions on the blog %s for user %s (%s)."
+msgid "You are about to set permissions on the blog %1$s for user %2$s (%3$s)."
 msgstr ""
 
 msgid "Save"

@@ -283,7 +283,7 @@ class Manage extends Process
                 (new Text(
                     null,
                     sprintf(
-                        __('You are about to set permissions on the blog %s for user %s (%s).'),
+                        __('You are about to set permissions on the blog %1$s for user %2$s (%3$s).'),
                         '<strong>' . Html::escapeHTML(App::blog()->name()) . '</strong>',
                         '<strong>' . self::$u_id . '</strong>',
                         Html::escapeHTML(self::$u_name)
