@@ -31,6 +31,7 @@ use Dotclear\Helper\Html\Form\Submit;
 use Dotclear\Helper\Html\Form\Text;
 use Dotclear\Helper\Html\Form\Ul;
 use Dotclear\Helper\Html\Html;
+use Dotclear\Schema\Extension\User;
 use Exception;
 
 class Manage extends Process
@@ -162,7 +163,7 @@ class Manage extends Process
                 'limit' => 100,
                 'order' => 'nb_post DESC',
             ])->toStatic();
-            $rs->extend('rsExtUser');
+            $rs->extend(User::class);
             $rsStatic = $rs->toStatic();
             $rsStatic->lexicalSort('user_id');
             while ($rsStatic->fetch()) {
