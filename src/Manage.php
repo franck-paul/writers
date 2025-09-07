@@ -18,7 +18,6 @@ namespace Dotclear\Plugin\writers;
 use Dotclear\App;
 use Dotclear\Core\Backend\Notices;
 use Dotclear\Core\Backend\Page;
-use Dotclear\Core\Process;
 use Dotclear\Helper\Html\Form\Checkbox;
 use Dotclear\Helper\Html\Form\Div;
 use Dotclear\Helper\Html\Form\Form;
@@ -31,11 +30,14 @@ use Dotclear\Helper\Html\Form\Submit;
 use Dotclear\Helper\Html\Form\Text;
 use Dotclear\Helper\Html\Form\Ul;
 use Dotclear\Helper\Html\Html;
+use Dotclear\Helper\Process\TraitProcess;
 use Dotclear\Schema\Extension\User;
 use Exception;
 
-class Manage extends Process
+class Manage
 {
+    use TraitProcess;
+
     private static ?string $u_id = null;
 
     private static ?string $u_name = null;
@@ -201,7 +203,7 @@ class Manage extends Process
                 ]);
             } else {
                 foreach ($blog_users as $k => $v) {
-                    if (isset($v['p']) && $v['p'] > 0 && $k !== App::auth()->userID()) {
+                    if (count($v['p']) > 0 && $k !== App::auth()->userID()) {
                         $name = Html::escapeHTML(App::users()->getUserCN(
                             $k,
                             $v['name'],
