@@ -16,8 +16,6 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\writers;
 
 use Dotclear\App;
-use Dotclear\Core\Backend\Notices;
-use Dotclear\Core\Backend\Page;
 use Dotclear\Helper\Html\Form\Checkbox;
 use Dotclear\Helper\Html\Form\Div;
 use Dotclear\Helper\Html\Form\Form;
@@ -108,7 +106,7 @@ class Manage
 
                     App::auth()->sudo(App::users()->setUserBlogPermissions(...), self::$u_id, App::blog()->id(), $set_perms, true);
 
-                    Notices::addSuccessNotice(sprintf(__('Permissions updated for user %s'), self::$u_name));
+                    App::backend()->notices()->addSuccessNotice(sprintf(__('Permissions updated for user %s'), self::$u_name));
                     My::redirect([
                         'pup' => 1,
                     ]);
@@ -176,21 +174,21 @@ class Manage
             }
 
             if ($usersList !== []) {
-                $head = Page::jsJson('writers', $usersList) .
-                Page::jsLoad('js/jquery/jquery.autocomplete.js') .
+                $head = App::backend()->page()->jsJson('writers', $usersList) .
+                App::backend()->page()->jsLoad('js/jquery/jquery.autocomplete.js') .
                 My::jsLoad('writers.js');
             }
         }
 
-        Page::openModule(My::name(), $head);
+        App::backend()->page()->openModule(My::name(), $head);
 
-        echo Page::breadcrumb(
+        echo App::backend()->page()->breadcrumb(
             [
                 Html::escapeHTML(App::blog()->name()) => '',
                 __('writers')                         => '',
             ]
         );
-        echo Notices::getNotices();
+        echo App::backend()->notices()->getNotices();
 
         // Form
 
@@ -330,8 +328,8 @@ class Manage
             ->render();
         }
 
-        Page::helpBlock('writers');
+        App::backend()->page()->helpBlock('writers');
 
-        Page::closeModule();
+        App::backend()->page()->closeModule();
     }
 }
