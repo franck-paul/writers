@@ -1,4 +1,4 @@
-# Plugin writers pour Dotclear 2 - Gestion des utilisateurs pour les administrateurs de blog
+# Plugin Rédacteurs (writers) pour Dotclear 2 - Gestion des utilisateurs pour les administrateurs de blog
 
 [![Release](https://img.shields.io/github/v/release/franck-paul/writers)](https://github.com/franck-paul/writers/releases)
 [![Date](https://img.shields.io/github/release-date/franck-paul/writers)](https://github.com/franck-paul/writers/releases)
@@ -22,6 +22,6 @@ Une fois ce plugin installé, **Alice** pourra ajouter **Roger** et lui affecter
 
 ## Réglages
 
-Ce plugin possède une page de réglage, accessible via le menu (section Blog) qui permet de gérer les utilisateurs et leurs droits.
+Ce plugin possède une page de réglage, accessible via le menu (item Rédacteur dans la section Blog) qui permet de gérer les utilisateurs et leurs droits.
 
 Notez que l'accès à cette page, quand on est super-administrateur, renvoie sur la page de gestion classique des utilisateurs du blog.
