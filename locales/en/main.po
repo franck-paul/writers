@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: writers-dotclear-2-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-27 16:07+0200\n"
+"POT-Creation-Date: 2026-01-25 11:06+0100\n"
 "PO-Revision-Date: 2020-04-30 12:25\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: English\n"
@@ -15,7 +15,10 @@ msgstr ""
 "X-Crowdin-Language: en\n"
 "X-Crowdin-File: /master/locales/_pot/main.pot\n"
 
-msgid "writers"
+msgid "Writers"
+msgstr ""
+
+msgid "Invite people to write on your blog"
 msgstr ""
 
 msgid "Writer does not exists."
@@ -29,6 +32,9 @@ msgstr ""
 
 #, php-format
 msgid "Permissions updated for user %s"
+msgstr ""
+
+msgid "writers"
 msgstr ""
 
 msgid "No writers"

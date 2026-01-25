@@ -25,7 +25,8 @@ class Backend
     public static function init(): bool
     {
         // dead but useful code, in order to have translations
-        __('writers');
+        __('Writers');
+        __('Invite people to write on your blog');
 
         return self::status(My::checkContext(My::BACKEND));
     }

@@ -23,7 +23,7 @@ $this->registerModule(
         'type'        => 'plugin',
         'settings'    => [],
 
-        'details'    => 'https://plugins.dotaddict.org/dc2/details/writers',
+        'details'    => 'https://dotclear.org/plugin/detail/writers',
         'support'    => 'https://github.com/franck-paul/writers',
         'repository' => 'https://raw.githubusercontent.com/franck-paul/writers/main/dcstore.xml',
         'license'    => 'gpl2',

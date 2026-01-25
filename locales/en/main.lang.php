@@ -10,11 +10,13 @@
 
 use Dotclear\Helper\L10n;
 
-L10n::$locales['writers'] = '';
+L10n::$locales['Writers'] = '';
+L10n::$locales['Invite people to write on your blog'] = '';
 L10n::$locales['Writer does not exists.'] = '';
 L10n::$locales['You cannot add or update this writer.'] = '';
 L10n::$locales['You cannot change your own permissions.'] = '';
 L10n::$locales['Permissions updated for user %s'] = '';
+L10n::$locales['writers'] = '';
 L10n::$locales['No writers'] = '';
 L10n::$locales['Permissions:'] = '';
 L10n::$locales['change permissions'] = '';
