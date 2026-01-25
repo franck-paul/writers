@@ -1,14 +1,14 @@
 # 
 # Translators:
-# Franck Paul <carnet.franck.paul@gmail.com>, 2025
+# Franck Paul <carnet.franck.paul@gmail.com>, 2026
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: writers-dotclear-2-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-27 16:07+0200\n"
+"POT-Creation-Date: 2026-01-25 11:06+0100\n"
 "PO-Revision-Date: 2023-06-09 17:02+0000\n"
-"Last-Translator: Franck Paul <carnet.franck.paul@gmail.com>, 2025\n"
+"Last-Translator: Franck Paul <carnet.franck.paul@gmail.com>, 2026\n"
 "Language-Team: French (https://app.transifex.com/open-time/teams/109573/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,8 +19,11 @@ msgstr ""
 "X-Crowdin-Language: en\n"
 "X-Crowdin-Project: writers-dotclear-2-plugin\n"
 
-msgid "writers"
-msgstr "writers"
+msgid "Writers"
+msgstr "Rédacteurs"
+
+msgid "Invite people to write on your blog"
+msgstr "Invitez des personnes à écrire sur votre blog"
 
 msgid "Writer does not exists."
 msgstr "Le rédacteur n'existe pas."
@@ -34,6 +37,9 @@ msgstr "Vous ne pouvez pas changer vos propres permissions."
 #, php-format
 msgid "Permissions updated for user %s"
 msgstr "Permissions mises à jour pour l'utilisatrice ou l'utilisateur %s"
+
+msgid "writers"
+msgstr "writers"
 
 msgid "No writers"
 msgstr "Aucun rédacteur"
