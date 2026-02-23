@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\writers;
 
 use Dotclear\App;
+use Dotclear\Exception\DatabaseException;
 use Dotclear\Helper\Html\Form\Checkbox;
 use Dotclear\Helper\Html\Form\Div;
 use Dotclear\Helper\Html\Form\Form;
@@ -68,9 +69,10 @@ class Manage
         self::$u_name  = null;
         self::$chooser = false;
 
-        if (!empty($_POST['i_id'])) {
+        $i_id = is_string($i_id = $_POST['i_id']) ? $i_id : '';
+        if ($i_id !== '') {
             try {
-                $rs = App::users()->getUser($_POST['i_id']);
+                $rs = App::users()->getUser($i_id);
 
                 if ($rs->isEmpty() || is_null($rs->user_id)) {
                     throw new Exception(__('Writer does not exists.'));
@@ -80,12 +82,21 @@ class Manage
                     throw new Exception(__('You cannot add or update this writer.'));
                 }
 
-                if ($rs->user_id == App::auth()->userID()) {
+                $user_id = is_string($user_id = $rs->user_id) ? $user_id : null;
+                if (is_null($user_id)) {
+                    throw new DatabaseException(__('Wrong field type'));
+                }
+
+                if ($user_id === App::auth()->userID()) {
                     throw new Exception(__('You cannot change your own permissions.'));
                 }
 
-                self::$u_id   = $rs->user_id;
-                self::$u_name = App::users()->getUserCN(self::$u_id, $rs->user_name, $rs->user_firstname, $rs->user_displayname);
+                $user_name        = is_string($user_name = $rs->user_name) ? $user_name : null;
+                $user_firstname   = is_string($user_firstname = $rs->user_firstname) ? $user_firstname : null;
+                $user_displayname = is_string($user_displayname = $rs->user_displayname) ? $user_displayname : null;
+
+                self::$u_id   = $user_id;
+                self::$u_name = App::users()->getUserCN(self::$u_id, $user_name, $user_firstname, $user_displayname);
                 unset($rs);
                 self::$chooser = true;
 
@@ -93,7 +104,11 @@ class Manage
                     $set_perms = [];
 
                     if (!empty($_POST['perm'])) {
-                        foreach ($_POST['perm'] as $perm_id => $v) {
+                        /**
+                         * @var array<string, bool> $perm
+                         */
+                        $perm = is_iterable($perm = $_POST['perm']) ? $perm : [];
+                        foreach ($perm as $perm_id => $v) {
                             if (defined('DC_WR_ALLOW_ADMIN') && !constant('DC_WR_ALLOW_ADMIN') && $perm_id === App::auth()::PERMISSION_ADMIN) {
                                 continue;
                             }
@@ -132,9 +147,10 @@ class Manage
         $perm_types = App::auth()->getPermissionsTypes();
         $perm_users = array_keys($blog_users);
 
-        if (!empty($_GET['u_id'])) {
+        $u_id = is_string($u_id = $_GET['u_id']) ? $u_id : '';
+        if ($u_id !== '') {
             try {
-                if (!isset($blog_users[$_GET['u_id']])) {
+                if (!isset($blog_users[$u_id])) {
                     throw new Exception(__('Writer does not exists.'));
                 }
 
@@ -142,12 +158,17 @@ class Manage
                     throw new Exception(__('You cannot change your own permissions.'));
                 }
 
-                self::$u_id   = $_GET['u_id'];
+                self::$u_id = $u_id;
+
+                $user_name        = is_string($user_name = $blog_users[self::$u_id]['name']) ? $user_name : null;
+                $user_firstname   = is_string($user_firstname = $blog_users[self::$u_id]['firstname']) ? $user_firstname : null;
+                $user_displayname = is_string($user_displayname = $blog_users[self::$u_id]['displayname']) ? $user_displayname : null;
+
                 self::$u_name = App::users()->getUserCN(
                     self::$u_id,
-                    $blog_users[self::$u_id]['name'],
-                    $blog_users[self::$u_id]['firstname'],
-                    $blog_users[self::$u_id]['displayname']
+                    $user_name,
+                    $user_firstname,
+                    $user_displayname
                 );
                 self::$chooser = true;
             } catch (Exception $e) {
@@ -202,11 +223,15 @@ class Manage
             } else {
                 foreach ($blog_users as $k => $v) {
                     if (count($v['p']) > 0 && $k !== App::auth()->userID()) {
+                        $user_name        = is_string($user_name = $v['name']) ? $user_name : null;
+                        $user_firstname   = is_string($user_firstname = $v['firstname']) ? $user_firstname : null;
+                        $user_displayname = is_string($user_displayname = $v['displayname']) ? $user_displayname : null;
+
                         $name = Html::escapeHTML(App::users()->getUserCN(
                             $k,
-                            $v['name'],
-                            $v['firstname'],
-                            $v['displayname']
+                            $user_name,
+                            $user_firstname,
+                            $user_displayname
                         ));
                         $permissions = [];
                         foreach ($v['p'] as $permission => $value) {
