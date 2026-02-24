@@ -69,7 +69,7 @@ class Manage
         self::$u_name  = null;
         self::$chooser = false;
 
-        $i_id = is_string($i_id = $_POST['i_id']) ? $i_id : '';
+        $i_id = is_string($i_id = $_POST['i_id'] ?? '') ? $i_id : '';
         if ($i_id !== '') {
             try {
                 $rs = App::users()->getUser($i_id);
@@ -147,7 +147,7 @@ class Manage
         $perm_types = App::auth()->getPermissionsTypes();
         $perm_users = array_keys($blog_users);
 
-        $u_id = is_string($u_id = $_GET['u_id']) ? $u_id : '';
+        $u_id = is_string($u_id = $_GET['u_id'] ?? '') ? $u_id : '';
         if ($u_id !== '') {
             try {
                 if (!isset($blog_users[$u_id])) {
