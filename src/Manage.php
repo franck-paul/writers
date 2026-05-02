@@ -237,6 +237,7 @@ class Manage
                         foreach ($v['p'] as $permission => $value) {
                             $permissions[] = (new Li())->text(__($perm_types[$permission]));
                         }
+
                         $users[] = (new Div('user-' . $k))
                             ->class('user-perm')
                             ->items([
