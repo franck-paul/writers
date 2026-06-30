@@ -82,7 +82,7 @@ class Manage
                     throw new Exception(__('You cannot add or update this writer.'));
                 }
 
-                $user_id = is_string($user_id = $rs->user_id) ? $user_id : null;
+                $user_id = $rs->strField('user_id', true);
                 if (is_null($user_id)) {
                     throw new DatabaseException(__('Wrong field type'));
                 }
@@ -91,9 +91,9 @@ class Manage
                     throw new Exception(__('You cannot change your own permissions.'));
                 }
 
-                $user_name        = is_string($user_name = $rs->user_name) ? $user_name : null;
-                $user_firstname   = is_string($user_firstname = $rs->user_firstname) ? $user_firstname : null;
-                $user_displayname = is_string($user_displayname = $rs->user_displayname) ? $user_displayname : null;
+                $user_name        = $rs->strField('user_name', true);
+                $user_firstname   = $rs->strField('user_firstname', true);
+                $user_displayname = $rs->strField('user_displayname', true);
 
                 self::$u_id   = $user_id;
                 self::$u_name = App::users()->getUserCN(self::$u_id, $user_name, $user_firstname, $user_displayname);
