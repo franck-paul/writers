@@ -74,11 +74,11 @@ class Manage
             try {
                 $rs = App::users()->getUser($i_id);
 
-                if ($rs->isEmpty() || is_null($rs->user_id)) {
+                if ($rs->isEmpty()) {
                     throw new Exception(__('Writer does not exists.'));
                 }
 
-                if ($rs->user_super) {
+                if ($rs->boolField('user_super')) {
                     throw new Exception(__('You cannot add or update this writer.'));
                 }
 
@@ -191,9 +191,9 @@ class Manage
             $rsStatic = $rs->toStatic();
             $rsStatic->lexicalSort('user_id');
             while ($rsStatic->fetch()) {
-                if (!$rsStatic->user_super && !in_array($rsStatic->user_id, $perm_users)) {
+                if (!$rsStatic->boolField('user_super') && !in_array($rsStatic->strField('user_id'), $perm_users)) {
                     // Keep only non superadmin and not already set user
-                    $usersList[] = $rsStatic->user_id;
+                    $usersList[] = $rsStatic->strField('user_id');
                 }
             }
 
