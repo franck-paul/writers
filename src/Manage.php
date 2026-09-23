@@ -237,7 +237,8 @@ class Manage
                             $user_displayname
                         ));
                         $permissions = [];
-                        foreach ($v['p'] as $permission => $value) {
+                        $keys        = array_keys($v['p']);
+                        foreach ($keys as $permission) {
                             $permissions[] = (new Li())->text(__($perm_types[$permission]));
                         }
 
