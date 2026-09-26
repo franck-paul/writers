@@ -238,8 +238,8 @@ class Manage
                         ));
                         $permissions = [];
                         $keys        = array_keys($v['p']);
-                        foreach ($keys as $permission) {
-                            $permissions[] = (new Li())->text(__($perm_types[$permission]));
+                        foreach ($keys as $key) {
+                            $permissions[] = (new Li())->text(__($perm_types[$key]));
                         }
 
                         $users[] = (new Div('user-' . $k))
