@@ -3,7 +3,7 @@
 [![Release](https://img.shields.io/github/v/release/franck-paul/writers)](https://github.com/franck-paul/writers/releases)
 [![Date](https://img.shields.io/github/release-date/franck-paul/writers)](https://github.com/franck-paul/writers/releases)
 [![Issues](https://img.shields.io/github/issues/franck-paul/writers)](https://github.com/franck-paul/writers/issues)
-[![License](https://img.shields.io/github/license/franck-paul/writers)](https://github.com/franck-paul/writers/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/franck-paul/writers)](https://github.com/franck-paul/writers/blob/main/LICENSE)
 
 ## Description
 
