@@ -191,7 +191,7 @@ class Manage
             $rsStatic = $rs->toStatic();
             $rsStatic->lexicalSort('user_id');
             while ($rsStatic->fetch()) {
-                if (!$rsStatic->boolField('user_super') && !in_array($rsStatic->strField('user_id'), $perm_users)) {
+                if (!$rsStatic->boolField('user_super') && !in_array($rsStatic->strField('user_id'), $perm_users, true)) {
                     // Keep only non superadmin and not already set user
                     $usersList[] = $rsStatic->strField('user_id');
                 }
