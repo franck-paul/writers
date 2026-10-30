@@ -157,7 +157,7 @@ class Manage
                     throw new Exception(__('Writer does not exists.'));
                 }
 
-                if ($_GET['u_id'] == App::auth()->userID()) {
+                if ($u_id === App::auth()->userID()) {
                     throw new Exception(__('You cannot change your own permissions.'));
                 }
 
