@@ -294,7 +294,7 @@ class Manage
                 ]),
             ])
             ->render();
-        } elseif (self::$u_id) {
+        } elseif (!empty(self::$u_id)) {
             // Change user permission
             $user_perm = isset($blog_users[self::$u_id]) ? $blog_users[self::$u_id]['p'] : [];
 
