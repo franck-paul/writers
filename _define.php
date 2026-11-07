@@ -18,9 +18,9 @@ if (isset($this) && is_object($this) && method_exists($this, 'registerModule') &
         'Writers',
         'Invite people to write on your blog',
         'Olivier Meunier',
-        '7.0',
+        '7.1',
         [
-            'date'        => '2026-08-03T10:17:05+0200',
+            'date'        => '2026-11-07T17:10:18+0100',
             'requires'    => [['core', '2.39']],
             'permissions' => 'My',
             'type'        => 'plugin',
