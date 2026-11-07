@@ -1,11 +1,11 @@
 <modules xmlns:da="http://dotaddict.org/da/">
   <module id="writers">
     <name>Writers</name>
-    <version>7.0</version>
+    <version>7.1</version>
     <author>Olivier Meunier</author>
     <desc>Invite people to write on your blog</desc>
-    <date>2026-08-03T10:17:05+0200</date>
-    <file>https://github.com/franck-paul/writers/releases/download/7.0/plugin-writers-7.0.zip</file>
+    <date>2026-11-07T17:10:18+0100</date>
+    <file>https://github.com/franck-paul/writers/releases/download/7.1/plugin-writers-7.1.zip</file>
     <da:dcmin>2.39</da:dcmin>
     <da:details>https://dotclear.org/plugin/detail/writers</da:details>
     <da:support>https://github.com/franck-paul/writers</da:support>
