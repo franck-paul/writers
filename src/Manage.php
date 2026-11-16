@@ -110,7 +110,7 @@ class Manage
                         $perm = is_iterable($perm = $_POST['perm']) ? $perm : [];
                         foreach ($perm as $perm_id => $v) {
                             if (defined('DC_WR_ALLOW_ADMIN')
-                                && !constant('DC_WR_ALLOW_ADMIN')
+                                && !(bool) constant('DC_WR_ALLOW_ADMIN')
                                 && $perm_id === App::auth()::PERMISSION_ADMIN
                             ) {
                                 continue;
@@ -326,7 +326,7 @@ class Manage
             $permissions = [];
             foreach ($perm_types as $perm_id => $perm) {
                 if (defined('DC_WR_ALLOW_ADMIN')
-                    && !constant('DC_WR_ALLOW_ADMIN')
+                    && !(bool) constant('DC_WR_ALLOW_ADMIN')
                     && $perm_id === App::auth()::PERMISSION_ADMIN
                 ) {
                     continue;
